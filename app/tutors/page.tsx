@@ -1,6 +1,6 @@
 import { studentApi } from "@/api/student";
 import TutorFilters from "@/components/tutors/TutorFilters";
-import { Category, PaginatedResponse, TutorProfile } from "@/lib/types";
+import { Category, PaginatedResponse, Tutor } from "@/lib/types";
 import {
   BookOpen,
   ChevronRight,
@@ -9,9 +9,16 @@ import {
   Search,
   Star,
 } from "lucide-react";
+import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { Suspense } from "react";
+
+export const metadata: Metadata = {
+  title: "Browse Tutors | Skill Bridge",
+  description:
+    "Find the best tutors in Bangladesh. Filter by category, price, and availability.",
+};
 
 export default async function TutorListPage({
   searchParams,
@@ -41,7 +48,7 @@ export default async function TutorListPage({
     );
   }
 
-  const tutorsData = tutorsRes.data as PaginatedResponse<TutorProfile> | null;
+  const tutorsData = tutorsRes.data as PaginatedResponse<Tutor> | null;
   const tutors =
     tutorsData?.data || (Array.isArray(tutorsData) ? tutorsData : []);
   const categories = ((categoriesRes.data as unknown as Category[]) || []).map(
@@ -118,7 +125,7 @@ export default async function TutorListPage({
                       </h3>
                       <div className="flex flex-wrap gap-1 mb-4">
                         <BookOpen className="w-4 h-4 text-blue-600 mt-0.5" />
-                        {tutor.subjects.slice(0, 2).map((s: string) => (
+                        {(tutor.subjects || []).slice(0, 2).map((s: string) => (
                           <span
                             key={s}
                             className="px-2 py-0.5 bg-blue-50 text-blue-600 rounded-md text-xs font-bold"
@@ -126,9 +133,9 @@ export default async function TutorListPage({
                             {s}
                           </span>
                         ))}
-                        {tutor.subjects.length > 2 && (
+                        {(tutor.subjects || []).length > 2 && (
                           <span className="text-xs text-gray-400 font-bold self-center">
-                            +{tutor.subjects.length - 2}
+                            +{(tutor.subjects || []).length - 2}
                           </span>
                         )}
                       </div>

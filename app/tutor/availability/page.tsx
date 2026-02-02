@@ -1,6 +1,13 @@
 import { tutorApi } from "@/api/tutor";
 import AvailabilityForm from "@/components/tutor/AvailabilityForm";
+import { Metadata } from "next";
 import { headers } from "next/headers";
+
+export const metadata: Metadata = {
+  title: "Set Availability | Skill Bridge",
+  description:
+    "Manage your teaching hours and availability status for students.",
+};
 
 export default async function AvailabilityPage() {
   const h = await headers();

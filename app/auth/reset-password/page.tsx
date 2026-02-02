@@ -1,5 +1,11 @@
 import { ResetPasswordForm } from "@/components/auth/ResetPasswordForm";
+import { Metadata } from "next";
 import { Suspense } from "react";
+
+export const metadata: Metadata = {
+  title: "Reset Password | Skill Bridge",
+  description: "Set a new password for your Skill Bridge account.",
+};
 
 export default function ResetPasswordPage() {
   return (

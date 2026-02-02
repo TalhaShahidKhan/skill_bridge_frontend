@@ -3,7 +3,13 @@ import SessionList from "@/components/tutor/SessionList";
 import SessionPagination from "@/components/tutor/SessionPagination";
 import SessionStatusFilter from "@/components/tutor/SessionStatusFilter";
 import { Booking, PaginatedResponse } from "@/lib/types";
+import { Metadata } from "next";
 import { headers } from "next/headers";
+
+export const metadata: Metadata = {
+  title: "Tutor Sessions | Skill Bridge",
+  description: "View and manage all your tutoring sessions and students.",
+};
 
 export default async function ManageBookings({
   searchParams,

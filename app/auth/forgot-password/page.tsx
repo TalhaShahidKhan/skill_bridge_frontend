@@ -1,4 +1,10 @@
 import { ForgotPasswordForm } from "@/components/auth/ForgotPasswordForm";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Forgot Password | Skill Bridge",
+  description: "Reset your Skill Bridge password if you've forgotten it.",
+};
 
 export default function ForgotPasswordPage() {
   return (

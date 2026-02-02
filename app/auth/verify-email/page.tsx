@@ -1,6 +1,13 @@
 import { VerifyEmailForm } from "@/components/auth/VerifyEmailForm";
 import { Loader2 } from "lucide-react";
+import { Metadata } from "next";
 import { Suspense } from "react";
+
+export const metadata: Metadata = {
+  title: "Verify Email | Skill Bridge",
+  description:
+    "Verify your email address to activate your Skill Bridge account.",
+};
 
 export default function VerifyEmailPage() {
   return (

@@ -4,8 +4,14 @@ import UserSearch from "@/components/admin/UserSearch";
 import UsersTable from "@/components/admin/UsersTable";
 import { PaginatedResponse, User } from "@/lib/types";
 import { Loader2 } from "lucide-react";
+import { Metadata } from "next";
 import { headers } from "next/headers";
 import { Suspense } from "react";
+
+export const metadata: Metadata = {
+  title: "User Management | Admin | Skill Bridge",
+  description: "Manage all platform users, their roles, and account statuses.",
+};
 
 export default async function UsersPage({
   searchParams,

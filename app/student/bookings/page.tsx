@@ -3,7 +3,13 @@ import BookingList from "@/components/student/BookingList";
 import BookingPagination from "@/components/student/BookingPagination";
 import BookingStatusFilter from "@/components/student/BookingStatusFilter";
 import { AlertCircle } from "lucide-react";
+import { Metadata } from "next";
 import { headers } from "next/headers";
+
+export const metadata: Metadata = {
+  title: "My Bookings | Skill Bridge",
+  description: "View and manage your tutoring booking requests and status.",
+};
 
 interface BookingResponse {
   bookingId: string;

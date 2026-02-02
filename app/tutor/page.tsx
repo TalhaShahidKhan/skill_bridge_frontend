@@ -11,9 +11,15 @@ import {
   Star,
   Users,
 } from "lucide-react";
+import { Metadata } from "next";
 import { headers } from "next/headers";
 import Image from "next/image";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Tutor Dashboard | Skill Bridge",
+  description: "Manage your teaching schedule, student sessions, and reviews.",
+};
 
 interface DashboardStats {
   sessions: {

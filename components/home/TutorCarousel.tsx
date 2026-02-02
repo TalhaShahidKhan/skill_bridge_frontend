@@ -1,26 +1,11 @@
 "use client";
 
+import { Tutor } from "@/lib/types";
 import useEmblaCarousel, { UseEmblaCarouselType } from "embla-carousel-react";
 import { ChevronLeft, ChevronRight, Star, Users } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
-
-interface Tutor {
-  tutorId: string;
-  subject: string;
-  experience: number;
-  pricePerDay: number;
-  avgRating: number;
-  reviewsCount: number;
-  user: {
-    name: string;
-    image: string | null;
-  };
-  category: {
-    name: string;
-  };
-}
 
 export default function TutorCarousel({ tutors }: { tutors: Tutor[] }) {
   const [emblaRef, emblaApi] = useEmblaCarousel({
@@ -99,10 +84,10 @@ export default function TutorCarousel({ tutors }: { tutors: Tutor[] }) {
               <div className="group/card bg-slate-50 rounded-[40px] p-6 border border-slate-100 hover:bg-white hover:shadow-[0_20px_60px_-15px_rgba(30,58,138,0.15)] hover:-translate-y-2 transition-all duration-500 h-full flex flex-col">
                 <div className="relative mb-6 shrink-0">
                   <div className="aspect-4/3 rounded-[32px] bg-blue-100 overflow-hidden relative shadow-lg">
-                    {tutor.user.image ? (
+                    {tutor.user?.image ? (
                       <Image
                         src={tutor.user.image}
-                        alt={tutor.user.name}
+                        alt={tutor.user.name || "Tutor"}
                         fill
                         className="object-cover group-hover/card:scale-110 transition-transform duration-700"
                       />
@@ -112,7 +97,7 @@ export default function TutorCarousel({ tutors }: { tutors: Tutor[] }) {
                       </div>
                     )}
                     <div className="absolute top-4 right-4 px-4 py-1.5 bg-white/90 backdrop-blur-md rounded-full text-[10px] font-black uppercase tracking-[0.2em] text-slate-900 shadow-sm">
-                      {tutor.category.name}
+                      {tutor.category?.name || "General"}
                     </div>
                   </div>
                 </div>
@@ -121,17 +106,19 @@ export default function TutorCarousel({ tutors }: { tutors: Tutor[] }) {
                   <div className="space-y-2">
                     <div className="flex justify-between items-start">
                       <h3 className="text-2xl font-black text-slate-900 group-hover/card:text-blue-600 transition-colors line-clamp-1 font-outfit">
-                        {tutor.user.name}
+                        {tutor.user?.name || "Expert Tutor"}
                       </h3>
                       <div className="flex items-center gap-1.5 bg-amber-50 px-3 py-1.5 rounded-xl border border-amber-100">
                         <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
                         <span className="text-amber-800 font-black text-sm">
-                          {tutor.avgRating.toFixed(1)}
+                          {(tutor.avgRating ?? 0).toFixed(1)}
                         </span>
                       </div>
                     </div>
                     <p className="text-blue-600 font-extrabold text-sm uppercase tracking-widest">
-                      {tutor.subject}
+                      {tutor.subject ||
+                        (tutor.subjects && tutor.subjects[0]) ||
+                        "Education"}
                     </p>
                   </div>
 

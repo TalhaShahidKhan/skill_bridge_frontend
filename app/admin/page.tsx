@@ -2,7 +2,13 @@ import { adminApi } from "@/api/admin";
 import AdminDashboardClient from "@/components/admin/AdminDashboardClient";
 import { Analytics } from "@/lib/types";
 import { BookOpen, TrendingUp, UserCheck, Users } from "lucide-react";
+import { Metadata } from "next";
 import { headers } from "next/headers";
+
+export const metadata: Metadata = {
+  title: "Admin Dashboard | Skill Bridge",
+  description: "Platform analytics and administrative management overview.",
+};
 
 export default async function AdminDashboardPage() {
   const h = await headers();

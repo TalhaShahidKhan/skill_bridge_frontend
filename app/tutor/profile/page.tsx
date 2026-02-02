@@ -4,7 +4,14 @@ import { tutorApi } from "@/api/tutor";
 import DeleteAccountSection from "@/components/shared/DeleteAccountSection";
 import TutorProfileForm from "@/components/tutor/TutorProfileForm";
 import { Category, Session, TutorProfile } from "@/lib/types";
+import { Metadata } from "next";
 import { headers } from "next/headers";
+
+export const metadata: Metadata = {
+  title: "Tutor Profile | Skill Bridge",
+  description:
+    "Update your tutor information, subjects, and teaching preferences.",
+};
 
 export default async function TutorProfilePage() {
   const h = await headers();

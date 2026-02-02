@@ -1,4 +1,11 @@
 import { SignUpForm } from "@/components/auth/SignUpForm";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Join Skill Bridge | Create Account",
+  description:
+    "Create a new Skill Bridge account as a student or tutor and start your learning journey.",
+};
 
 export default function SignUpPage() {
   return (

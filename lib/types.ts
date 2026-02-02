@@ -151,17 +151,28 @@ export interface Session {
 }
 export interface Tutor {
   tutorId: string;
-  subject: string;
+  subject?: string;
+  subjects?: string[];
   experience: number;
   pricePerDay: number;
-  avgRating: number;
-  reviewsCount: number;
-  user: {
+  avgRating?: number;
+  reviewsCount?: number;
+  bio?: string | null;
+  institute?: string | null;
+  address?: string;
+  availableFrom?: string | null;
+  availableTo?: string | null;
+  user?: {
     name: string;
     image: string | null;
+    email?: string;
   };
-  category: {
+  category?: {
     name: string;
+  };
+  reviews?: Review[];
+  _count?: {
+    reviews: number;
   };
 }
 

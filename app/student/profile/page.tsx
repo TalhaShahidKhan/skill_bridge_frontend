@@ -3,7 +3,13 @@ import { studentApi } from "@/api/student";
 import DeleteAccountSection from "@/components/shared/DeleteAccountSection";
 import StudentProfileForm from "@/components/student/StudentProfileForm";
 import { Session, StudentProfile } from "@/lib/types";
+import { Metadata } from "next";
 import { headers } from "next/headers";
+
+export const metadata: Metadata = {
+  title: "My Profile | Skill Bridge",
+  description: "Update your student profile and contact information.",
+};
 
 export default async function ProfilePage() {
   const h = await headers();

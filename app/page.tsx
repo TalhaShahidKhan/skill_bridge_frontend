@@ -15,6 +15,12 @@ import { headers } from "next/headers";
 import Link from "next/link";
 import { Suspense } from "react";
 
+export const metadata: Metadata = {
+  title: "Skill Bridge | Connect with Expert Tutors in Bangladesh",
+  description:
+    "Skill Bridge is the leading platform in Bangladesh connecting students with verified expert tutors for personalized learning experiences.",
+};
+
 export default async function HomePage() {
   const h = await headers();
   const { data: session } = await authClient.getSession({

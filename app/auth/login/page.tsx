@@ -1,4 +1,11 @@
 import { SignInForm } from "@/components/auth/SignInForm";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Sign In | Skill Bridge",
+  description:
+    "Sign in to your Skill Bridge account to manage your tutoring sessions.",
+};
 
 export default function LoginPage() {
   return (

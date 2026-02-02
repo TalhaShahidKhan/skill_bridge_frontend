@@ -1,5 +1,6 @@
 import { studentApi } from "@/api/student";
 import BookingForm from "@/components/tutors/BookingForm";
+import { Tutor } from "@/lib/types";
 import {
   ChevronLeft,
   MapPin,
@@ -8,40 +9,32 @@ import {
   Star,
   Users,
 } from "lucide-react";
+import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-interface Tutor {
-  tutorId: string;
-  subjects: string[];
-  experience: number;
-  pricePerDay: number;
-  address: string;
-  bio: string | null;
-  institute: string | null;
-  availableFrom: string | null;
-  availableTo: string | null;
-  user: {
-    name: string;
-    image: string | null;
-    email: string;
-  };
-  category: {
-    name: string;
-  };
-  reviews: {
-    id: string;
-    rating: number;
-    comment: string;
-    createdAt: string;
-    student: {
-      user: {
-        name: string;
-        image: string | null;
-      };
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const { id } = await params;
+  const res = await studentApi.getTutorDetails(id);
+  const tutor = res.data as Tutor | null;
+
+  if (!tutor) {
+    return {
+      title: "Tutor Not Found | Skill Bridge",
     };
-  }[];
+  }
+
+  return {
+    title: `${tutor.user?.name || "Tutor"} | expert in ${(tutor.subjects || []).join(", ")} | Skill Bridge`,
+    description:
+      tutor.bio ||
+      `Learn from ${tutor.user?.name || "our expert tutor"} on Skill Bridge.`,
+  };
 }
 
 export default async function TutorDetailsPage({
@@ -56,7 +49,7 @@ export default async function TutorDetailsPage({
     notFound();
   }
 
-  const typedTutor = tutor as unknown as Tutor;
+  const typedTutor = tutor as Tutor;
   const reviews = typedTutor.reviews ?? [];
 
   const avgRating = reviews.length
@@ -77,64 +70,28 @@ export default async function TutorDetailsPage({
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
           {/* Left Column: Tutor Info */}
           <div className="lg:col-span-2 space-y-8">
-            <section className="bg-white rounded-3xl p-8 shadow-sm border border-gray-100 flex flex-col md:flex-row gap-8 items-start">
-              <div className="w-32 h-32 bg-blue-100 rounded-3xl shrink-0 overflow-hidden relative shadow-lg shadow-blue-50 border-4 border-white">
-                {typedTutor.user?.image ? (
-                  <Image
-                    src={typedTutor.user.image}
-                    alt=""
-                    fill
-                    className="object-cover"
-                  />
-                ) : (
-                  <Users className="w-16 h-16 text-blue-600 m-auto mt-8" />
-                )}
-              </div>
-              <div className="flex-1">
-                <div className="flex flex-wrap items-center gap-3 mb-2">
-                  <h1 className="text-3xl font-black text-gray-900 tracking-tight font-outfit">
-                    {typedTutor.user?.name ?? "Unknown Tutor"}
-                  </h1>
-                  <span className="px-3 py-1 bg-blue-50 text-blue-600 rounded-full text-xs font-black uppercase tracking-wider border border-blue-100">
-                    {typedTutor.category?.name ?? "General"}
-                  </span>
+            <div className="bg-white rounded-4xl shadow-sm border border-slate-100">
+              <div className="p-8 flex flex-col md:flex-row items-start gap-8">
+                <div className="w-32 h-32 bg-blue-100 rounded-3xl shrink-0 overflow-hidden relative shadow-lg shadow-blue-50 border-4 border-white">
+                  {typedTutor.user?.image ? (
+                    <Image
+                      src={typedTutor.user.image}
+                      alt=""
+                      fill
+                      className="object-cover"
+                    />
+                  ) : (
+                    <Users className="w-16 h-16 text-blue-600 m-auto mt-8" />
+                  )}
                 </div>
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {typedTutor.subjects.map((s) => (
-                    <span
-                      key={s}
-                      className="px-3 py-1 bg-blue-50 text-blue-600 rounded-lg text-sm font-bold border border-blue-100"
-                    >
-                      {s}
+                <div className="flex-1">
+                  <div className="flex flex-wrap items-center gap-3 mb-2">
+                    <h1 className="text-3xl font-black text-gray-900 tracking-tight font-outfit">
+                      {typedTutor.user?.name ?? "Unknown Tutor"}
+                    </h1>
+                    <span className="px-3 py-1 bg-blue-50 text-blue-600 rounded-full text-xs font-black uppercase tracking-wider border border-blue-100">
+                      {typedTutor.category?.name ?? "General"}
                     </span>
-                  ))}
-                </div>
-
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
-                  <div className="text-center p-3 bg-gray-50 rounded-2xl border border-gray-100">
-                    <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">
-                      Rating
-                    </p>
-                    <p className="text-lg font-black text-gray-900 flex items-center justify-center gap-1">
-                      <Star className="w-4 h-4 fill-amber-400 text-amber-400" />{" "}
-                      {avgRating.toFixed(1)}
-                    </p>
-                  </div>
-                  <div className="text-center p-3 bg-gray-50 rounded-2xl border border-gray-100">
-                    <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">
-                      Exp
-                    </p>
-                    <p className="text-lg font-black text-gray-900">
-                      {typedTutor.experience}y
-                    </p>
-                  </div>
-                  <div className="text-center p-3 bg-gray-50 rounded-2xl border border-gray-100">
-                    <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">
-                      Reviews
-                    </p>
-                    <p className="text-lg font-black text-gray-900">
-                      {reviews.length}
-                    </p>
                   </div>
                   <div className="text-center p-3 bg-gray-50 rounded-2xl border border-gray-100">
                     <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">
@@ -159,7 +116,7 @@ export default async function TutorDetailsPage({
                   )}
                 </div>
               </div>
-            </section>
+            </div>
 
             <section className="bg-white rounded-3xl p-8 shadow-sm border border-gray-100">
               <h2 className="text-2xl font-bold text-gray-900 mb-6 font-outfit">
@@ -185,9 +142,9 @@ export default async function TutorDetailsPage({
 
               {reviews.length > 0 ? (
                 <div className="space-y-6">
-                  {reviews.map((review: any) => (
+                  {reviews.map((review) => (
                     <div
-                      key={review.reviewId || review.id}
+                      key={review.id}
                       className="p-6 bg-gray-50 rounded-3xl border border-gray-100 group"
                     >
                       <div className="flex items-center gap-4 mb-4">
@@ -244,8 +201,8 @@ export default async function TutorDetailsPage({
             <BookingForm
               tutorId={typedTutor.tutorId}
               pricePerDay={typedTutor.pricePerDay}
-              availableFrom={typedTutor.availableFrom}
-              availableTo={typedTutor.availableTo}
+              availableFrom={typedTutor.availableFrom ?? null}
+              availableTo={typedTutor.availableTo ?? null}
             />
           </div>
         </div>

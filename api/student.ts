@@ -24,7 +24,7 @@ export const studentApi = {
       `/student/tutors${queryString ? `?${queryString}` : ""}`,
     );
   },
-  getTutorDetails: (id: string) => apiFetch(`/student/tutors/${id}`),
+  getTutorDetails: (id: string) => apiFetch<Tutor>(`/student/tutors/${id}`),
   listCategories: (headers?: HeadersInit) =>
     apiFetch("/student/categories", { headers }),
 

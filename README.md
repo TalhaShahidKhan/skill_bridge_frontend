@@ -1,6 +1,6 @@
 # Skill Bridge Frontend
 
-![Skill Bridge Logo](/logo.png)
+![Skill Bridge Logo](public/logo.png)
 
 **Skill Bridge** is a modern tutoring platform that connects students with expert tutors. Built with **Next.js 15**, **TypeScript**, and **Tailwind CSS**, it offers a seamless, premium experience for both learning and teaching.
 

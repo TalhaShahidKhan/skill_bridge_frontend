@@ -38,8 +38,21 @@ export function SignInForm() {
           return { error: error.message || "Invalid email or password" };
         }
 
-        router.push("/");
-        router.refresh(); // Refresh to update session in Navbar
+        const { data: session } = await authClient.getSession();
+
+        if (session) {
+          const dashboardPath =
+            session.user.role === "ADMIN"
+              ? "/admin"
+              : session.user.role === "TUTOR"
+                ? "/tutor"
+                : "/student";
+          router.push(dashboardPath);
+        } else {
+          router.push("/");
+        }
+
+        router.refresh();
         return { success: true };
       } catch (err) {
         if (err instanceof ZodError) {

@@ -4,7 +4,9 @@ export async function apiFetch<T>(
 ): Promise<{ data: T | null; error: string | null }> {
   try {
     const baseUrl =
-      process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api";
+      typeof window !== "undefined"
+        ? "/api"
+        : `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/api`;
     const url = `${baseUrl}${endpoint}`;
 
     // Properly handle Headers - merge incoming headers with defaults

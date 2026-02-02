@@ -108,21 +108,21 @@ export default async function StudentDashboardPage() {
         <StatsCard
           icon={Calendar}
           label="Total Bookings"
-          value={stats.bookings.total}
+          value={stats?.bookings?.total || 0}
           color="bg-blue-500"
           trend="All time"
         />
         <StatsCard
           icon={CheckCircle2}
           label="Completed"
-          value={stats.bookings.completed}
+          value={stats?.bookings?.completed || 0}
           color="bg-green-500"
           trend="Successful sessions"
         />
         <StatsCard
           icon={Clock}
           label="Pending Sessions"
-          value={stats.bookings.pending}
+          value={stats?.bookings?.pending || 0}
           color="bg-orange-500"
           trend="Scheduled ahead"
         />

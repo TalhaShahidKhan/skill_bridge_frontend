@@ -30,10 +30,9 @@ export default async function AdminDashboardPage() {
   }
 
   const typedStats = stats as unknown as Analytics;
-
   const completedBookings =
-    typedStats.bookings.byStatus.find((b) => b.status === "COMPLETED")?.count ||
-    0;
+    typedStats?.bookings?.byStatus?.find((b) => b.status === "COMPLETED")
+      ?.count || 0;
 
   return (
     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">

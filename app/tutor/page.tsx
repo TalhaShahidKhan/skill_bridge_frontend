@@ -97,7 +97,7 @@ export default async function TutorDashboardPage() {
             ! 📚
           </h1>
           <p className="text-gray-500 mt-1 font-medium italic">
-            You have {stats?.sessions.confirmed || 0} upcoming sessions today.
+            You have {stats?.sessions?.confirmed || 0} upcoming sessions today.
           </p>
         </div>
         <div className="flex gap-4">
@@ -121,28 +121,28 @@ export default async function TutorDashboardPage() {
         <StatsCard
           icon={Calendar}
           label="Total Sessions"
-          value={stats?.sessions.total || 0}
+          value={stats?.sessions?.total || 0}
           color="bg-indigo-500"
           trend="All time"
         />
         <StatsCard
           icon={CheckCircle2}
           label="Completed"
-          value={stats?.sessions.completed || 0}
+          value={stats?.sessions?.completed || 0}
           color="bg-emerald-500"
           trend="Successful sessions"
         />
         <StatsCard
           icon={Star}
           label="Rating"
-          value={stats?.reviews.averageRating?.toFixed(1) || "0.0"}
+          value={stats?.reviews?.averageRating?.toFixed(1) || "0.0"}
           color="bg-amber-500"
-          trend={`${stats?.reviews.count || 0} reviews`}
+          trend={`${stats?.reviews?.count || 0} reviews`}
         />
         <StatsCard
           icon={DollarSign}
           label="Earnings"
-          value={`${stats?.earnings.amount.toLocaleString()} ${stats?.earnings.currency || "BDT"}`}
+          value={`${stats?.earnings?.amount?.toLocaleString() || "0"} ${stats?.earnings?.currency || "BDT"}`}
           color="bg-blue-500"
           trend="Based on completed sessions"
         />

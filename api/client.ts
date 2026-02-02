@@ -3,11 +3,12 @@ export async function apiFetch<T>(
   options: RequestInit = {},
 ): Promise<{ data: T | null; error: string | null }> {
   try {
-    const baseUrl =
+    const baseUrl = (
       typeof window !== "undefined"
         ? "/api"
-        : `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/api`;
-    const url = `${baseUrl}${endpoint}`;
+        : process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api"
+    ).replace(/\/$/, "");
+    const url = `${baseUrl}/${endpoint.replace(/^\//, "")}`;
 
     // Properly handle Headers - merge incoming headers with defaults
     const incomingHeaders = options.headers;

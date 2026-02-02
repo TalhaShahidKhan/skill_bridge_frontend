@@ -23,10 +23,16 @@ export const metadata: Metadata = {
 };
 
 export default async function HomePage() {
-  const h = await headers();
-  const { data: session } = await authClient.getSession({
-    fetchOptions: { headers: h },
-  });
+  let session = null;
+  try {
+    const h = await headers();
+    const { data } = await authClient.getSession({
+      fetchOptions: { headers: h },
+    });
+    session = data;
+  } catch (err) {
+    console.error("Failed to fetch session:", err);
+  }
 
   const features = [
     {

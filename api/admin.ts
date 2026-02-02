@@ -41,24 +41,45 @@ export const adminApi = {
   deleteUser: (id: string, headers?: HeadersInit) =>
     apiFetch(`/admin/users/${id}`, { method: "DELETE", headers }),
   listReviews: (
-    query: { page?: number; limit?: number },
+    query: {
+      page?: number;
+      limit?: number;
+      tutorId?: string;
+      studentId?: string;
+      minRating?: number;
+      maxRating?: number;
+    },
     headers?: HeadersInit,
   ) => {
     const params = new URLSearchParams();
     if (query.page) params.set("page", query.page.toString());
     if (query.limit) params.set("limit", query.limit.toString());
+    if (query.tutorId) params.set("tutorId", query.tutorId);
+    if (query.studentId) params.set("studentId", query.studentId);
+    if (query.minRating) params.set("minRating", query.minRating.toString());
+    if (query.maxRating) params.set("maxRating", query.maxRating.toString());
     return apiFetch(`/admin/reviews?${params.toString()}`, { headers });
   },
   deleteReview: (id: string, headers?: HeadersInit) =>
     apiFetch(`/admin/reviews/${id}`, { method: "DELETE", headers }),
   listBookings: (
-    query: { status?: string; page?: number; limit?: number },
+    query: {
+      status?: string;
+      page?: number;
+      limit?: number;
+      search?: string;
+      studentId?: string;
+      tutorId?: string;
+    },
     headers?: HeadersInit,
   ) => {
     const params = new URLSearchParams();
     if (query.status) params.set("status", query.status);
     if (query.page) params.set("page", query.page.toString());
     if (query.limit) params.set("limit", query.limit.toString());
+    if (query.search) params.set("search", query.search);
+    if (query.studentId) params.set("studentId", query.studentId);
+    if (query.tutorId) params.set("tutorId", query.tutorId);
     return apiFetch(`/admin/bookings?${params.toString()}`, { headers });
   },
   setTutorFeatured: (id: string, isFeatured: boolean, headers?: HeadersInit) =>

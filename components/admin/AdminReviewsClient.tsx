@@ -1,6 +1,6 @@
 "use client";
 
-import { authClient } from "@/api/betterAuth";
+import { adminApi } from "@/api/admin";
 import { Loader2, Star, Trash2 } from "lucide-react";
 import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
@@ -27,7 +27,7 @@ interface Review {
 
 interface ReviewsResponse {
   data: Review[];
-  meta: {
+  pagination: {
     totalPages: number;
   };
 }
@@ -41,18 +41,20 @@ export default function AdminReviewsClient() {
   const fetchReviews = useCallback(async () => {
     setLoading(true);
     try {
-      const response = await authClient.$fetch("/api/admin/reviews", {
-        method: "GET",
-        query: {
-          page: page,
-          limit: 10,
-        },
+      const { data, error } = await adminApi.listReviews({
+        page: page,
+        limit: 10,
       });
 
-      if (response.data) {
-        const result = response.data as unknown as ReviewsResponse;
+      if (error) {
+        toast.error(error);
+        return;
+      }
+
+      if (data) {
+        const result = data as unknown as ReviewsResponse;
         setReviews(result.data || []);
-        setTotalPages(result.meta?.totalPages || 1);
+        setTotalPages(result.pagination?.totalPages || 1);
       }
     } catch {
       toast.error("Failed to fetch reviews");
@@ -74,15 +76,10 @@ export default function AdminReviewsClient() {
       return;
 
     try {
-      const { error } = await authClient.$fetch(
-        `/api/admin/reviews/${reviewId}`,
-        {
-          method: "DELETE",
-        },
-      );
+      const { error } = await adminApi.deleteReview(reviewId);
 
       if (error) {
-        toast.error(error.message || "Failed to delete review");
+        toast.error(error || "Failed to delete review");
         return;
       }
 

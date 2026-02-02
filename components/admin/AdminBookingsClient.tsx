@@ -1,6 +1,6 @@
 "use client";
 
-import { authClient } from "@/api/betterAuth";
+import { adminApi } from "@/api/admin";
 import { Calendar, Clock, Loader2, Search } from "lucide-react";
 import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
@@ -31,7 +31,7 @@ interface Booking {
 
 interface BookingsResponse {
   data: Booking[];
-  meta: {
+  pagination: {
     totalPages: number;
   };
 }
@@ -47,20 +47,22 @@ export default function AdminBookingsClient() {
   const fetchBookings = useCallback(async () => {
     setLoading(true);
     try {
-      const response = await authClient.$fetch("/api/admin/bookings", {
-        method: "GET",
-        query: {
-          page: page,
-          limit: 10,
-          ...(statusFilter !== "All" ? { status: statusFilter } : {}),
-          ...(search ? { search } : {}),
-        },
+      const { data, error } = await adminApi.listBookings({
+        page: page,
+        limit: 10,
+        ...(statusFilter !== "All" ? { status: statusFilter } : {}),
+        ...(search ? { search } : {}),
       });
 
-      if (response.data) {
-        const result = response.data as unknown as BookingsResponse;
+      if (error) {
+        toast.error(error);
+        return;
+      }
+
+      if (data) {
+        const result = data as unknown as BookingsResponse;
         setBookings(result.data || []);
-        setTotalPages(result.meta?.totalPages || 1);
+        setTotalPages(result.pagination?.totalPages || 1);
       }
     } catch {
       toast.error("Failed to fetch bookings");

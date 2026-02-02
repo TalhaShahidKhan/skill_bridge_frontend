@@ -149,3 +149,24 @@ export interface Session {
     ipAddress: string | null;
   };
 }
+export interface Tutor {
+  tutorId: string;
+  subject: string;
+  experience: number;
+  pricePerDay: number;
+  avgRating: number;
+  reviewsCount: number;
+  user: {
+    name: string;
+    image: string | null;
+  };
+  category: {
+    name: string;
+  };
+}
+
+export interface ActionState {
+  success: boolean;
+  error?: string;
+  data?: unknown;
+}

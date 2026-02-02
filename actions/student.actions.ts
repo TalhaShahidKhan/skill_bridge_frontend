@@ -1,7 +1,7 @@
 "use server";
 
 import { studentApi } from "@/api/student";
-import { StudentProfile } from "@/lib/types";
+import { ActionState, StudentProfile } from "@/lib/types";
 import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 
@@ -69,13 +69,6 @@ export async function createBookingWithForm(
 
 import { studentProfileSchema } from "@/lib/validations";
 import { ZodError } from "zod";
-
-// Action state type for form actions
-export type ActionState = {
-  success: boolean;
-  error?: string;
-  data?: unknown;
-};
 
 export async function updateStudentProfileAction(
   data: Partial<StudentProfile>,

@@ -1,7 +1,7 @@
 "use client";
 
 import { studentApi } from "@/api/student";
-import { Review } from "@/lib/types";
+import { PaginatedResponse, Review } from "@/lib/types";
 import { Award, Calendar, MessageSquare, Star, User } from "lucide-react";
 import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
@@ -14,19 +14,26 @@ export default function ReviewsPage() {
   const fetchReviews = useCallback(async () => {
     try {
       const response = await studentApi.listReviews({});
-      const reviewsRaw = response.data as any;
-      const reviewsArray = (
-        Array.isArray(reviewsRaw?.data)
-          ? reviewsRaw.data
-          : Array.isArray(reviewsRaw)
-            ? reviewsRaw
-            : []
-      ).map((r: any) => ({
-        ...r,
-        id: r.reviewId || r.id,
-      }));
+      const reviewsRaw = response.data;
+      let reviewsArray: Review[] = [];
 
-      setReviews(reviewsArray);
+      if (reviewsRaw && typeof reviewsRaw === "object" && reviewsRaw !== null) {
+        if (
+          "data" in reviewsRaw &&
+          Array.isArray((reviewsRaw as PaginatedResponse<Review>).data)
+        ) {
+          reviewsArray = (reviewsRaw as PaginatedResponse<Review>).data || [];
+        } else if (Array.isArray(reviewsRaw)) {
+          reviewsArray = reviewsRaw as Review[];
+        }
+      }
+
+      setReviews(
+        reviewsArray.map((r) => ({
+          ...r,
+          id: r.reviewId || r.id,
+        })),
+      );
     } catch (err) {
       console.error("Failed to fetch reviews:", err);
       toast.error("Could not load reviews");

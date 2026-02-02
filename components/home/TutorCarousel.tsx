@@ -1,6 +1,6 @@
 "use client";
 
-import useEmblaCarousel from "embla-carousel-react";
+import useEmblaCarousel, { UseEmblaCarouselType } from "embla-carousel-react";
 import { ChevronLeft, ChevronRight, Star, Users } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -42,9 +42,12 @@ export default function TutorCarousel({ tutors }: { tutors: Tutor[] }) {
     [emblaApi],
   );
 
-  const onSelect = useCallback((emblaApi: any) => {
-    setPrevBtnEnabled(emblaApi.canScrollPrev());
-    setNextBtnEnabled(emblaApi.canScrollNext());
+  type EmblaApiType = UseEmblaCarouselType[1];
+
+  const onSelect = useCallback((api: EmblaApiType) => {
+    if (!api) return;
+    setPrevBtnEnabled(api.canScrollPrev());
+    setNextBtnEnabled(api.canScrollNext());
   }, []);
 
   useEffect(() => {

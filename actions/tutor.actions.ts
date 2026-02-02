@@ -1,7 +1,7 @@
 "use server";
 
 import { tutorApi } from "@/api/tutor";
-import { TutorProfile } from "@/lib/types";
+import { ActionState, TutorProfile } from "@/lib/types";
 import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 
@@ -14,13 +14,6 @@ async function getAuthHeaders() {
 
 import { tutorProfileSchema } from "@/lib/validations";
 import { ZodError } from "zod";
-
-// Action state type for form actions
-export type ActionState = {
-  success: boolean;
-  error?: string;
-  data?: unknown;
-};
 
 export async function updateTutorProfileAction(data: Partial<TutorProfile>) {
   const h = await getAuthHeaders();
@@ -60,8 +53,10 @@ export async function updateTutorProfileWithForm(
     const validated = tutorProfileSchema.parse(cleanedData);
 
     const h = await getAuthHeaders();
-
-    const res = await tutorApi.upsertProfile(validated as any, h);
+    const res = await tutorApi.upsertProfile(
+      validated as unknown as Partial<TutorProfile>,
+      h,
+    );
 
     if (res.error) {
       return { success: false, error: res.error };
@@ -93,7 +88,7 @@ export async function setTutorAvailabilityAction(data: {
 }
 
 export async function setTutorAvailabilityWithForm(
-  prevState: any,
+  prevState: ActionState,
   formData: FormData,
 ) {
   try {
@@ -107,13 +102,13 @@ export async function setTutorAvailabilityWithForm(
     const res = await tutorApi.setAvailability(rawData, h);
 
     if (res.error) {
-      return { error: res.error };
+      return { success: false, error: res.error };
     }
 
     revalidatePath("/tutor");
     return { success: true };
-  } catch (err) {
-    return { error: "An unexpected error occurred" };
+  } catch {
+    return { success: false, error: "An unexpected error occurred" };
   }
 }
 
@@ -126,7 +121,7 @@ export async function markSessionCompleteAction(id: string) {
 }
 
 export async function markSessionCompleteWithForm(
-  prevState: any,
+  prevState: ActionState,
   formData: FormData,
 ) {
   const id = formData.get("bookingId") as string;
@@ -134,7 +129,7 @@ export async function markSessionCompleteWithForm(
   const res = await tutorApi.markSessionComplete(id, h);
   revalidatePath("/tutor/sessions");
   revalidatePath("/tutor");
-  if (res.error) return { error: res.error };
+  if (res.error) return { success: false, error: res.error };
   return { success: true };
 }
 

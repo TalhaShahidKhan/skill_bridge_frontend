@@ -1,6 +1,6 @@
 import { authClient } from "@/api/betterAuth";
 import { tutorApi } from "@/api/tutor";
-import { Review } from "@/lib/types";
+import { Booking, PaginatedResponse, Review } from "@/lib/types";
 import {
   ArrowRight,
   Award,
@@ -32,24 +32,6 @@ interface DashboardStats {
   };
 }
 
-interface Session {
-  id: string;
-  bookingId?: string;
-  status: string;
-  date: string;
-  time: string;
-  student?: {
-    user?: {
-      name: string;
-      image?: string | null;
-    };
-  };
-}
-
-interface SessionsResponse {
-  data: Session[];
-}
-
 export default async function TutorDashboardPage() {
   const h = await headers();
   const cookie = h.get("cookie") || "";
@@ -63,21 +45,27 @@ export default async function TutorDashboardPage() {
 
   const session = sessionRes.data;
   const stats = statsRes.data as unknown as DashboardStats;
-  const sessionsData = sessionsRes.data as unknown as SessionsResponse;
+  const sessionsData = sessionsRes.data as PaginatedResponse<Booking>;
 
-  const recentSessions = (sessionsData?.data || []).map((s: Session) => ({
+  const recentSessions = (sessionsData?.data || []).map((s: Booking) => ({
     ...s,
     id: s.bookingId || s.id,
   }));
 
-  const reviewsRaw = reviewsRes.data as any;
-  const recentReviews = (
-    Array.isArray(reviewsRaw?.data)
-      ? reviewsRaw.data
-      : Array.isArray(reviewsRaw)
-        ? reviewsRaw
-        : []
-  ).map((r: any) => ({
+  const reviewsRaw = reviewsRes.data;
+  let reviewsArray: Review[] = [];
+  if (reviewsRaw && typeof reviewsRaw === "object" && reviewsRaw !== null) {
+    if (
+      "data" in reviewsRaw &&
+      Array.isArray((reviewsRaw as PaginatedResponse<Review>).data)
+    ) {
+      reviewsArray = (reviewsRaw as PaginatedResponse<Review>).data || [];
+    } else if (Array.isArray(reviewsRaw)) {
+      reviewsArray = reviewsRaw as Review[];
+    }
+  }
+
+  const recentReviews = reviewsArray.map((r: Review) => ({
     ...r,
     id: r.reviewId || r.id,
   }));

@@ -1,6 +1,7 @@
 "use client";
 
-import { ActionState, createReviewWithForm } from "@/actions/student.actions";
+import { createReviewWithForm } from "@/actions/student.actions";
+import { ActionState } from "@/lib/types";
 import { Loader2, MessageSquare, Star, X } from "lucide-react";
 import { useActionState, useEffect, useState } from "react";
 import { toast } from "sonner";

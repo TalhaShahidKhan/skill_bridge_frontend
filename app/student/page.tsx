@@ -1,6 +1,7 @@
 import { authClient } from "@/api/betterAuth";
 import { studentApi } from "@/api/student";
 import RecentBookings from "@/components/student/RecentBookings";
+import { Booking, PaginatedResponse, Review } from "@/lib/types";
 import {
   ArrowRight,
   Award,
@@ -13,21 +14,6 @@ import {
 import { headers } from "next/headers";
 import Link from "next/link";
 
-interface Booking {
-  id: string;
-  status: string;
-  date: string;
-  time: string;
-  review?: { rating: number } | null;
-  tutor?: {
-    subjects?: string[];
-    user?: {
-      name: string;
-      image?: string | null;
-    };
-  };
-}
-
 interface StudentDashboardStats {
   bookings: {
     total: number;
@@ -37,11 +23,6 @@ interface StudentDashboardStats {
   reviews: {
     count: number;
   };
-}
-
-interface BookingsResponse {
-  data: Booking[];
-  meta: { total: number };
 }
 
 export default async function StudentDashboardPage() {
@@ -60,20 +41,26 @@ export default async function StudentDashboardPage() {
     bookings: { total: 0, completed: 0, pending: 0 },
     reviews: { count: 0 },
   };
-  const bookingsData = bookingsRes.data as unknown as BookingsResponse;
+  const bookingsData = bookingsRes.data as PaginatedResponse<Booking>;
   const recentBookings = (bookingsData?.data || []).map((b: Booking) => ({
     ...b,
     id: b.bookingId || b.id,
   }));
 
-  const reviewsRaw = reviewsRes.data as any;
-  const recentReviews = (
-    Array.isArray(reviewsRaw?.data)
-      ? reviewsRaw.data
-      : Array.isArray(reviewsRaw)
-        ? reviewsRaw
-        : []
-  ).map((r: any) => ({
+  const reviewsRaw = reviewsRes.data;
+  let reviewsArray: Review[] = [];
+  if (reviewsRaw && typeof reviewsRaw === "object" && reviewsRaw !== null) {
+    if (
+      "data" in reviewsRaw &&
+      Array.isArray((reviewsRaw as PaginatedResponse<Review>).data)
+    ) {
+      reviewsArray = (reviewsRaw as PaginatedResponse<Review>).data || [];
+    } else if (Array.isArray(reviewsRaw)) {
+      reviewsArray = reviewsRaw as Review[];
+    }
+  }
+
+  const recentReviews = reviewsArray.map((r: Review) => ({
     ...r,
     id: r.reviewId || r.id,
   }));

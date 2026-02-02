@@ -5,16 +5,11 @@ import {
   deleteCategoryAction,
   updateCategoryAction,
 } from "@/actions/admin.actions";
+import { Category } from "@/lib/types";
 import { Edit2, Loader2, Plus, Tag, Trash2, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
-
-interface Category {
-  categoryId: string;
-  name: string;
-  subjects: string[];
-}
 
 export default function CategoryManager({
   categories,

@@ -13,8 +13,12 @@ export const adminApi = {
     },
     headers?: HeadersInit,
   ) => {
-    const params = new URLSearchParams(query as any).toString();
-    return apiFetch(`/admin/users?${params}`, { headers });
+    const params = new URLSearchParams();
+    if (query.search) params.set("search", query.search);
+    if (query.role) params.set("role", query.role);
+    if (query.page) params.set("page", query.page.toString());
+    if (query.limit) params.set("limit", query.limit.toString());
+    return apiFetch(`/admin/users?${params.toString()}`, { headers });
   },
   getUser: (id: string, headers?: HeadersInit) =>
     apiFetch(`/admin/users/${id}`, { headers }),
@@ -40,8 +44,10 @@ export const adminApi = {
     query: { page?: number; limit?: number },
     headers?: HeadersInit,
   ) => {
-    const params = new URLSearchParams(query as any).toString();
-    return apiFetch(`/admin/reviews?${params}`, { headers });
+    const params = new URLSearchParams();
+    if (query.page) params.set("page", query.page.toString());
+    if (query.limit) params.set("limit", query.limit.toString());
+    return apiFetch(`/admin/reviews?${params.toString()}`, { headers });
   },
   deleteReview: (id: string, headers?: HeadersInit) =>
     apiFetch(`/admin/reviews/${id}`, { method: "DELETE", headers }),
@@ -49,8 +55,11 @@ export const adminApi = {
     query: { status?: string; page?: number; limit?: number },
     headers?: HeadersInit,
   ) => {
-    const params = new URLSearchParams(query as any).toString();
-    return apiFetch(`/admin/bookings?${params}`, { headers });
+    const params = new URLSearchParams();
+    if (query.status) params.set("status", query.status);
+    if (query.page) params.set("page", query.page.toString());
+    if (query.limit) params.set("limit", query.limit.toString());
+    return apiFetch(`/admin/bookings?${params.toString()}`, { headers });
   },
   setTutorFeatured: (id: string, isFeatured: boolean, headers?: HeadersInit) =>
     apiFetch(`/admin/tutors/${id}/featured`, {

@@ -1,0 +1,74 @@
+
+C:\Users\talha\OneDrive\Desktop\skill_bridge\skill_bridge_frontend\actions\tutor.actions.ts
+   64:59  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   96:14  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  115:12  warning  'err' is defined but never used           @typescript-eslint/no-unused-vars
+  129:14  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\talha\OneDrive\Desktop\skill_bridge\skill_bridge_frontend\api\admin.ts
+  16:49  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  43:49  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  52:49  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\talha\OneDrive\Desktop\skill_bridge\skill_bridge_frontend\api\client.ts
+  42:17  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\talha\OneDrive\Desktop\skill_bridge\skill_bridge_frontend\app\student\page.tsx
+  69:41  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  76:13  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\talha\OneDrive\Desktop\skill_bridge\skill_bridge_frontend\app\student\reviews\page.tsx
+  17:43  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  24:17  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\talha\OneDrive\Desktop\skill_bridge\skill_bridge_frontend\app\tutor\page.tsx
+  73:41  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  80:13  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\talha\OneDrive\Desktop\skill_bridge\skill_bridge_frontend\app\tutor\reviews\page.tsx
+  17:43  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  24:17  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\talha\OneDrive\Desktop\skill_bridge\skill_bridge_frontend\app\tutors\[id]\page.tsx
+  188:41  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\talha\OneDrive\Desktop\skill_bridge\skill_bridge_frontend\components\home\TutorCarousel.tsx
+  45:43  error  Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    @typescript-eslint/no-explicit-any
+  52:5   error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\talha\OneDrive\Desktop\skill_bridge\skill_bridge_frontend\components\home\TutorCarousel.tsx:52:5
+  50 |   useEffect(() => {
+  51 |     if (!emblaApi) return;
+> 52 |     onSelect(emblaApi);
+     |     ^^^^^^^^ Avoid calling setState() directly within an effect
+  53 |     emblaApi.on("reInit", onSelect);
+  54 |     emblaApi.on("select", onSelect);
+  55 |   }, [emblaApi, onSelect]);  react-hooks/set-state-in-effect
+
+C:\Users\talha\OneDrive\Desktop\skill_bridge\skill_bridge_frontend\components\tutor\AvailabilityForm.tsx
+  18:9  warning  'router' is assigned a value but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             @typescript-eslint/no-unused-vars
+  42:7  error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\talha\OneDrive\Desktop\skill_bridge\skill_bridge_frontend\components\tutor\AvailabilityForm.tsx:42:7
+  40 |   useEffect(() => {
+  41 |     if (initialData) {
+> 42 |       setIsAvailable(initialData.isAvailable ?? true);
+     |       ^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  43 |     }
+  44 |   }, [initialData]);
+  45 |  react-hooks/set-state-in-effect
+
+✖ 21 problems (19 errors, 2 warnings)
+

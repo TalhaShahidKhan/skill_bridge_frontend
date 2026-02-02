@@ -1,23 +1,8 @@
 import { studentApi } from "@/api/student";
+import { Tutor } from "@/lib/types";
 import { Users } from "lucide-react";
 import Link from "next/link";
 import TutorCarousel from "./TutorCarousel";
-
-interface Tutor {
-  tutorId: string;
-  subject: string;
-  experience: number;
-  pricePerDay: number;
-  avgRating: number;
-  reviewsCount: number;
-  user: {
-    name: string;
-    image: string | null;
-  };
-  category: {
-    name: string;
-  };
-}
 
 export default async function FeaturedTutors() {
   const { data: result, error } = await studentApi.browseTutors({

@@ -1,4 +1,4 @@
-import { StudentProfile } from "@/lib/types";
+import { PaginatedResponse, StudentProfile, Tutor } from "@/lib/types";
 import { apiFetch } from "./client";
 
 export const studentApi = {
@@ -8,15 +8,21 @@ export const studentApi = {
     categoryId?: string;
     page?: number;
     limit?: number;
+    onlyFeatured?: boolean;
+    onlyAvailable?: boolean;
   }) => {
     const params = new URLSearchParams();
     if (query.search) params.set("search", query.search);
     if (query.categoryId) params.set("categoryId", query.categoryId);
     if (query.page) params.set("page", query.page.toString());
     if (query.limit) params.set("limit", query.limit.toString());
+    if (query.onlyFeatured) params.set("onlyFeatured", "true");
+    if (query.onlyAvailable) params.set("onlyAvailable", "true");
 
     const queryString = params.toString();
-    return apiFetch(`/student/tutors${queryString ? `?${queryString}` : ""}`);
+    return apiFetch<PaginatedResponse<Tutor>>(
+      `/student/tutors${queryString ? `?${queryString}` : ""}`,
+    );
   },
   getTutorDetails: (id: string) => apiFetch(`/student/tutors/${id}`),
   listCategories: (headers?: HeadersInit) =>

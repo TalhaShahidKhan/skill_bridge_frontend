@@ -2,7 +2,7 @@
 
 import { setTutorAvailabilityWithForm } from "@/actions/tutor.actions";
 import { AlertCircle, Calendar, Loader2, Save } from "lucide-react";
-import { useRouter } from "next/navigation";
+
 import { useActionState, useEffect, useState } from "react";
 import { toast } from "sonner";
 
@@ -15,9 +15,7 @@ export default function AvailabilityForm({
     isAvailable: boolean;
   } | null;
 }) {
-  const router = useRouter(); // Keeping router if you needed it for anything else, otherwise remove. Actually redundant with server revalidate, but okay to keep for now if needed.
-  // Actually, let's keep things clean and rely on state updates or revalidation.
-  // But for checkboxes/toggles in form actions, we often need some JS to flip a visual state or a hidden input.
+  // Use state init for the toggle, rely on defaultValue for dates.
 
   const [isAvailable, setIsAvailable] = useState(
     initialData?.isAvailable ?? true,
@@ -35,13 +33,6 @@ export default function AvailabilityForm({
       toast.error(state.error);
     }
   }, [state]);
-
-  // Sync state if initialData changes
-  useEffect(() => {
-    if (initialData) {
-      setIsAvailable(initialData.isAvailable ?? true);
-    }
-  }, [initialData]);
 
   return (
     <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 font-semibold text-gray-700">

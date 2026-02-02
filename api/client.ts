@@ -39,7 +39,7 @@ export async function apiFetch<T>(
     });
 
     const contentType = res.headers.get("content-type");
-    let result: any;
+    let result: unknown;
 
     if (contentType && contentType.includes("application/json")) {
       result = await res.json();
@@ -55,12 +55,20 @@ export async function apiFetch<T>(
       return { data: text as unknown as T, error: null };
     }
 
+    const jsonResult = result as {
+      success?: boolean;
+      data?: T;
+      error?: string | { message?: string };
+      message?: string;
+    };
+
     if (!res.ok) {
       // Better error extraction from backend response
       const errorMessage =
-        result.error?.message ||
-        result.message ||
-        result.error ||
+        (typeof jsonResult.error === "object"
+          ? jsonResult.error?.message
+          : jsonResult.error) ||
+        jsonResult.message ||
         (typeof result === "string" ? result : "An error occurred");
 
       return {
@@ -69,7 +77,7 @@ export async function apiFetch<T>(
       };
     }
 
-    return { data: result.data || result, error: null };
+    return { data: (jsonResult.data ?? result) as T, error: null };
   } catch (error: unknown) {
     console.error("Fetch error:", error);
     let message = "An network error occurred. Please check your connection.";

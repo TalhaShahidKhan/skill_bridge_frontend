@@ -1,9 +1,7 @@
 "use client";
 
-import {
-  ActionState,
-  updateStudentProfileWithForm,
-} from "@/actions/student.actions";
+import { updateStudentProfileWithForm } from "@/actions/student.actions";
+import { ActionState } from "@/lib/types";
 import {
   Book,
   CheckCircle,

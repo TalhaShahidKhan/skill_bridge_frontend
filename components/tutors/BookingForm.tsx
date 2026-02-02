@@ -1,6 +1,7 @@
 "use client";
 
-import { ActionState, createBookingWithForm } from "@/actions/student.actions";
+import { createBookingWithForm } from "@/actions/student.actions";
+import { ActionState } from "@/lib/types";
 import {
   Calendar as CalendarIcon,
   CheckCircle,

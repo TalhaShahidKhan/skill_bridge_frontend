@@ -1,6 +1,7 @@
 "use client";
 
 import { authClient } from "@/api/betterAuth";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
@@ -23,14 +24,18 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
           <div className="flex items-center">
-            <Link
-              href="/"
-              className="text-2xl font-bold text-blue-600 flex items-center gap-2"
-            >
-              <span className="bg-blue-600 text-white p-1.5 rounded-lg">
-                🎓
+            <Link href="/" className="flex items-center gap-3 group">
+              <div className="relative w-10 h-10 overflow-hidden rounded-xl shadow-lg shadow-blue-100 group-hover:scale-110 transition-transform duration-300">
+                <Image
+                  src="/logo.png"
+                  alt="Skill Bridge Logo"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+              <span className="text-2xl font-black text-slate-800 tracking-tight font-outfit">
+                Skill<span className="text-blue-600">Bridge</span>
               </span>
-              <span>SkillBridge</span>
             </Link>
 
             <div className="hidden md:ml-10 md:flex md:space-x-8">

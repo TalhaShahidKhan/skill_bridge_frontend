@@ -1,6 +1,5 @@
 import {
   Facebook,
-  GraduationCap,
   Instagram,
   Linkedin,
   Mail,
@@ -9,6 +8,7 @@ import {
   Send,
   Twitter,
 } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 
 export default function Footer() {
@@ -45,12 +45,17 @@ export default function Footer() {
         {/* Top Section: Brand & Newsletter */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 mb-20">
           <div className="lg:col-span-5 space-y-8">
-            <Link href="/" className="flex items-center gap-2 group">
-              <div className="p-2.5 bg-linear-to-br from-blue-600 to-indigo-700 rounded-2xl shadow-xl shadow-blue-900/20 group-hover:scale-110 transition-all duration-500">
-                <GraduationCap className="w-7 h-7" />
+            <Link href="/" className="flex items-center gap-3 group">
+              <div className="relative w-12 h-12 overflow-hidden rounded-2xl shadow-xl shadow-blue-900/40 group-hover:scale-110 transition-all duration-500">
+                <Image
+                  src="/logo.png"
+                  alt="Skill Bridge Logo"
+                  fill
+                  className="object-cover"
+                />
               </div>
-              <span className="text-3xl font-black tracking-tighter font-outfit">
-                SkillBridge
+              <span className="text-3xl font-black tracking-tighter font-outfit uppercase">
+                Skill<span className="text-blue-500">Bridge</span>
               </span>
             </Link>
             <p className="text-slate-400 max-w-sm leading-relaxed text-lg font-medium">

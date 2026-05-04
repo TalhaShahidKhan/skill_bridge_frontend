@@ -1,6 +1,7 @@
 import { authClient } from "@/api/betterAuth";
 import { studentApi } from "@/api/student";
 import { tutorApi } from "@/api/tutor";
+import { ChangePasswordForm } from "@/components/auth/ChangePasswordForm";
 import DeleteAccountSection from "@/components/shared/DeleteAccountSection";
 import TutorProfileView from "@/components/tutor/TutorProfileView";
 import { Category, Session, TutorProfile } from "@/lib/types";
@@ -40,6 +41,8 @@ export default async function TutorProfilePage() {
         session={session as unknown as Session}
         categories={categories}
       />
+
+      <ChangePasswordForm />
 
       <DeleteAccountSection />
     </div>

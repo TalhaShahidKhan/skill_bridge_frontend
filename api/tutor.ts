@@ -73,4 +73,17 @@ export const tutorApi = {
   },
   getDashboardStats: (headers?: HeadersInit) =>
     apiFetch<TutorStats>("/tutor/dashboard", { headers }),
+  listPayments: (
+    query: { page?: number; limit?: number },
+    headers?: HeadersInit,
+  ) => {
+    const params = new URLSearchParams();
+    if (query.page) params.set("page", query.page.toString());
+    if (query.limit) params.set("limit", query.limit.toString());
+    const queryString = params.toString();
+    return apiFetch<PaginatedResponse<any>>(
+      `/payment/tutor-payments${queryString ? `?${queryString}` : ""}`,
+      { headers },
+    );
+  },
 };

@@ -157,3 +157,11 @@ export async function updateMeetingLinkAction(id: string, meetingLink: string) {
   revalidatePath("/tutor");
   return res;
 }
+
+export async function listTutorPaymentsAction(query: {
+  page?: number;
+  limit?: number;
+}) {
+  const h = await getAuthHeaders();
+  return tutorApi.listPayments(query, h);
+}

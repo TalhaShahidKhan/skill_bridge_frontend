@@ -1,6 +1,7 @@
 export type UserRole = "STUDENT" | "TUTOR" | "ADMIN";
 export type UserStatus = "ACTIVE" | "SUSPENDED" | "DELETED";
-export type BookingStatus = "PENDING" | "CONFIRMED" | "COMPLETED" | "CANCELLED";
+export type BookingStatus = "PENDING" | "CONFIRMED" | "COMPLETED" | "CANCELLED" | "PENDING_PAYMENT";
+export type PaymentStatus = "PENDING" | "COMPLETED" | "FAILED";
 export type Group = "NONE" | "SCIENCE" | "HUMANITIES" | "BUSINESS_STUDIES";
 
 export interface User {
@@ -194,6 +195,21 @@ export interface StudentStats {
   completedBookings: number;
   cancelledBookings: number;
   totalReviews: number;
+}
+
+export interface Payment {
+  paymentId: string;
+  studentId: string;
+  tutorId: string;
+  amount: number;
+  currency: string;
+  status: PaymentStatus;
+  stripeSessionId: string;
+  bookingId?: string;
+  createdAt: string;
+  updatedAt: string;
+  student?: StudentProfile;
+  booking?: Booking;
 }
 
 export interface ActionState {

@@ -9,6 +9,7 @@ import {
   LogOut,
   Star,
   UserCircle,
+  CreditCard,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -17,6 +18,7 @@ const menuItems = [
   { icon: LayoutDashboard, label: "Overview", href: "/tutor" },
   { icon: Calendar, label: "Manage Bookings", href: "/tutor/bookings" },
   { icon: Clock, label: "Availability", href: "/tutor/availability" },
+  { icon: CreditCard, label: "Payment History", href: "/tutor/payments" },
   { icon: UserCircle, label: "Profile Settings", href: "/tutor/profile" },
   { icon: Star, label: "Student Reviews", href: "/tutor/reviews" },
 ];

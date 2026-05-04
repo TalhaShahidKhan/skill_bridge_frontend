@@ -65,6 +65,33 @@ export async function createBookingWithForm(
   }
 }
 
+export async function createCheckoutSessionWithForm(
+  prevState: ActionState,
+  formData: FormData,
+): Promise<ActionState> {
+  try {
+    const rawData = {
+      tutorId: formData.get("tutorId") as string,
+      date: formData.get("date") as string,
+      time: `${formData.get("date")}T${formData.get("time")}`,
+      duration: Number(formData.get("duration") || 2),
+      notes: (formData.get("notes") as string) || undefined,
+    };
+
+    const h = await getAuthHeaders();
+    const res = await studentApi.createCheckoutSession(rawData, h);
+
+    if (res.error) {
+      return { success: false, error: res.error };
+    }
+
+    // Return the URL for redirection
+    return { success: true, data: res.data };
+  } catch {
+    return { success: false, error: "Failed to initiate payment" };
+  }
+}
+
 // ... other actions
 
 import { studentProfileSchema } from "@/lib/validations";

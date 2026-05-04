@@ -110,4 +110,13 @@ export const studentApi = {
   },
   getDashboardStats: (headers?: HeadersInit) =>
     apiFetch<StudentStats>("/student/dashboard", { headers }),
+  createCheckoutSession: (
+    data: { tutorId: string; date: string; time: string; duration: number; notes?: string },
+    headers?: HeadersInit,
+  ) =>
+    apiFetch<{ sessionId: string; url: string }>("/payment/create-checkout-session", {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers,
+    }),
 };

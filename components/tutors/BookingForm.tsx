@@ -1,12 +1,13 @@
 "use client";
 
-import { createBookingWithForm } from "@/actions/student.actions";
+import { createCheckoutSessionWithForm } from "@/actions/student.actions";
 import { ActionState } from "@/lib/types";
 import {
   Calendar as CalendarIcon,
   CheckCircle,
   Clock,
   Loader2,
+  CreditCard,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useActionState, useEffect } from "react";
@@ -23,30 +24,25 @@ export default function BookingForm({
   availableFrom: string | null;
   availableTo: string | null;
 }) {
-  const router = useRouter(); // Keeping router for redirect/navigation if needed on success
+  const router = useRouter();
 
   const initialState: ActionState = { success: false };
   const [state, formAction, isPending] = useActionState(
-    createBookingWithForm,
+    createCheckoutSessionWithForm,
     initialState,
   );
 
   useEffect(() => {
-    if (state?.success) {
-      toast.success("Booking request sent successfully!");
-      // router.push("/student/bookings");
-      // If we want to redirect, we can do it here.
-      // Or server action could use `redirect` (import from next/navigation) but that throws an error caught by boundary if not handled carefully.
-      // Client side redirect on success state is often safer for simple forms.
-      router.push("/student/bookings");
+    if (state?.success && state.data) {
+      const { url } = state.data as { url: string };
+      if (url) {
+        toast.success("Redirecting to payment...");
+        window.location.href = url;
+      }
     } else if (state?.error) {
       toast.error(state.error);
     }
-  }, [state, router]);
-
-  // We can let native date pickers handle state implicitly via form submission.
-  // Or keep state if we want complex validation before submit.
-  // For simplicity and "clean code", let's trust native constraints + server validation.
+  }, [state]);
 
   return (
     <div className="sticky top-28 bg-white rounded-3xl p-8 shadow-xl shadow-blue-50 border border-gray-100 text-gray-700">
@@ -62,8 +58,7 @@ export default function BookingForm({
 
       <form action={formAction} className="space-y-6">
         <input type="hidden" name="tutorId" value={tutorId} />
-        <input type="hidden" name="duration" value="2" />{" "}
-        {/* Default duration */}
+        <input type="hidden" name="duration" value="2" />
         <div className="space-y-1.5 font-semibold">
           <label className="text-sm flex items-center gap-2">
             <CalendarIcon className="w-4 h-4 text-blue-600" /> Preferred Date
@@ -98,11 +93,11 @@ export default function BookingForm({
         </div>
         <div className="p-4 bg-blue-50 rounded-2xl border border-blue-100">
           <h4 className="text-blue-900 font-bold text-sm mb-1 flex items-center gap-2">
-            <CheckCircle className="w-4 h-4" /> Why book now?
+            <CreditCard className="w-4 h-4" /> Secure Payment
           </h4>
           <p className="text-[11px] text-blue-700 font-medium">
-            Session requests are usually confirmed within 12 hours. Pay securely
-            after session confirmation.
+            You will be redirected to Stripe to complete your payment before the
+            booking is confirmed.
           </p>
         </div>
         <button
@@ -113,7 +108,10 @@ export default function BookingForm({
           {isPending ? (
             <Loader2 className="w-5 h-5 animate-spin" />
           ) : (
-            "Request Session"
+            <>
+              <CreditCard className="w-5 h-5" />
+              Pay and Book Now
+            </>
           )}
         </button>
       </form>

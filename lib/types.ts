@@ -125,6 +125,7 @@ export interface Analytics {
     categories: number;
     bookings: number;
     reviews: number;
+    totalRevenue: number;
   };
   users: {
     byRole: { role: string; count: number }[];
@@ -209,6 +210,7 @@ export interface Payment {
   createdAt: string;
   updatedAt: string;
   student?: StudentProfile;
+  tutor?: TutorProfile;
   booking?: Booking;
 }
 

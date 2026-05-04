@@ -5,6 +5,7 @@ import { Loader2, Star, Trash2 } from "lucide-react";
 import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
+import { Pagination } from "./Pagination";
 
 interface Review {
   reviewId: string;
@@ -28,15 +29,18 @@ interface Review {
 interface ReviewsResponse {
   data: Review[];
   pagination: {
+    page: number;
     totalPages: number;
+    total: number;
+    limit: number;
   };
 }
 
 export default function AdminReviewsClient() {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
-  const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
+  const [pagination, setPagination] = useState<ReviewsResponse["pagination"] | null>(null);
+  const page = pagination?.page || 1;
 
   const fetchReviews = useCallback(async () => {
     setLoading(true);
@@ -54,7 +58,7 @@ export default function AdminReviewsClient() {
       if (data) {
         const result = data as unknown as ReviewsResponse;
         setReviews(result.data || []);
-        setTotalPages(result.pagination?.totalPages || 1);
+        setPagination(result.pagination);
       }
     } catch {
       toast.error("Failed to fetch reviews");
@@ -188,27 +192,11 @@ export default function AdminReviewsClient() {
         </div>
 
         {/* Pagination */}
-        <div className="p-4 border-t border-slate-200 flex items-center justify-between">
-          <span className="text-sm text-slate-500 font-medium">
-            Page {page} of {totalPages}
-          </span>
-          <div className="flex gap-2">
-            <button
-              disabled={page <= 1}
-              onClick={() => setPage((p) => p - 1)}
-              className="px-4 py-2 text-sm font-bold text-slate-600 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
-            >
-              Previous
-            </button>
-            <button
-              disabled={page >= totalPages}
-              onClick={() => setPage((p) => p + 1)}
-              className="px-4 py-2 text-sm font-bold text-slate-600 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
-            >
-              Next
-            </button>
+        {pagination && (
+          <div className="p-4 bg-slate-50/50 border-t border-slate-200">
+            <Pagination pagination={pagination} />
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

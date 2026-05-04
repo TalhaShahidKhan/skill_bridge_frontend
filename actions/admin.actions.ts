@@ -95,3 +95,33 @@ export async function deleteCategoryAction(id: string) {
   revalidatePath("/admin/categories");
   return res;
 }
+
+export async function listAdminPaymentsAction(query: {
+  page?: number;
+  limit?: number;
+  search?: string;
+}) {
+  const h = await getAuthHeaders();
+  return adminApi.listPayments(query, h);
+}
+
+export async function deleteBookingAction(id: string) {
+  const h = await getAuthHeaders();
+  const res = await adminApi.deleteBooking(id, h);
+  revalidatePath("/admin/bookings");
+  return res;
+}
+
+export async function updateTutorProfileAction(id: string, data: any) {
+  const h = await getAuthHeaders();
+  const res = await adminApi.updateTutorProfile(id, data, h);
+  revalidatePath("/admin/users");
+  return res;
+}
+
+export async function updateStudentProfileAction(id: string, data: any) {
+  const h = await getAuthHeaders();
+  const res = await adminApi.updateStudentProfile(id, data, h);
+  revalidatePath("/admin/users");
+  return res;
+}

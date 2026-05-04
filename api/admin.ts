@@ -6,6 +6,7 @@ import {
   User,
   UserRole,
   UserStatus,
+  Payment,
 } from "@/lib/types";
 import { apiFetch } from "./client";
 
@@ -126,4 +127,45 @@ export const adminApi = {
     }),
   deleteCategory: (id: string, headers?: HeadersInit) =>
     apiFetch(`/admin/categories/${id}`, { method: "DELETE", headers }),
+
+  // Payments
+  listPayments: (
+    query: {
+      page?: number;
+      limit?: number;
+      studentId?: string;
+      tutorId?: string;
+      search?: string;
+    },
+    headers?: HeadersInit,
+  ) => {
+    const params = new URLSearchParams();
+    if (query.page) params.set("page", query.page.toString());
+    if (query.limit) params.set("limit", query.limit.toString());
+    if (query.studentId) params.set("studentId", query.studentId);
+    if (query.tutorId) params.set("tutorId", query.tutorId);
+    if (query.search) params.set("search", query.search);
+    return apiFetch<PaginatedResponse<Payment>>(
+      `/admin/payments?${params.toString()}`,
+      { headers },
+    );
+  },
+
+  // Advanced Bookings
+  deleteBooking: (id: string, headers?: HeadersInit) =>
+    apiFetch(`/admin/bookings/${id}`, { method: "DELETE", headers }),
+
+  // Global Profile Updates
+  updateTutorProfile: (id: string, data: any, headers?: HeadersInit) =>
+    apiFetch(`/admin/tutors/${id}`, {
+      method: "PATCH",
+      body: JSON.stringify(data),
+      headers,
+    }),
+  updateStudentProfile: (id: string, data: any, headers?: HeadersInit) =>
+    apiFetch(`/admin/students/${id}`, {
+      method: "PATCH",
+      body: JSON.stringify(data),
+      headers,
+    }),
 };

@@ -3,6 +3,7 @@
 import { authClient } from "@/api/betterAuth";
 import {
   BarChart,
+  CreditCard,
   LayoutDashboard,
   List,
   LogOut,
@@ -17,6 +18,7 @@ const menuItems = [
   { icon: LayoutDashboard, label: "Overview", href: "/admin" },
   { icon: Users, label: "Users & Tutors", href: "/admin/users" },
   { icon: List, label: "Bookings", href: "/admin/bookings" },
+  { icon: CreditCard, label: "Payments", href: "/admin/payments" },
   { icon: MessageSquare, label: "Reviews", href: "/admin/reviews" },
   { icon: BarChart, label: "Categories", href: "/admin/categories" },
 ];

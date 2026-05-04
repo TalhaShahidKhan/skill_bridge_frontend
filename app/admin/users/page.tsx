@@ -1,5 +1,5 @@
 import { adminApi } from "@/api/admin";
-import Pagination from "@/components/admin/Pagination";
+import { Pagination } from "@/components/admin/Pagination";
 import UserSearch from "@/components/admin/UserSearch";
 import UsersTable from "@/components/admin/UsersTable";
 import { PaginatedResponse, User } from "@/lib/types";
@@ -66,7 +66,7 @@ export default async function UsersPage({
         </Suspense>
 
         {/* Pagination */}
-        <Pagination page={page} totalPages={pagination?.totalPages || 1} />
+        {pagination && <Pagination pagination={pagination} />}
       </div>
 
       {error && <p className="text-red-500 font-medium text-center">{error}</p>}

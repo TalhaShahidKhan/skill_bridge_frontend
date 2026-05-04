@@ -1,7 +1,13 @@
 import { adminApi } from "@/api/admin";
 import AdminDashboardClient from "@/components/admin/AdminDashboardClient";
 import { Analytics } from "@/lib/types";
-import { BookOpen, TrendingUp, UserCheck, Users } from "lucide-react";
+import {
+  BookOpen,
+  DollarSign,
+  TrendingUp,
+  UserCheck,
+  Users,
+} from "lucide-react";
 import { Metadata } from "next";
 import { headers } from "next/headers";
 
@@ -46,13 +52,20 @@ export default async function AdminDashboardPage() {
       </header>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
         <StatsCard
           label="Total Users"
           value={typedStats.totals.users}
           icon={Users}
           color="bg-blue-500"
           subtext={`${typedStats.totals.students} Students, ${typedStats.totals.tutors} Tutors`}
+        />
+        <StatsCard
+          label="Total Revenue"
+          value={`$${typedStats.totals.totalRevenue.toLocaleString()}`}
+          icon={DollarSign}
+          color="bg-indigo-600"
+          subtext="Platform Earnings"
         />
         <StatsCard
           label="Total Bookings"

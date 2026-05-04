@@ -2,13 +2,17 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 
-export default function Pagination({
-  page,
-  totalPages,
+export function Pagination({
+  pagination,
 }: {
-  page: number;
-  totalPages: number;
+  pagination: {
+    page: number;
+    totalPages: number;
+    total: number;
+    limit: number;
+  };
 }) {
+  const { page, totalPages } = pagination;
   const router = useRouter();
   const searchParams = useSearchParams();
 

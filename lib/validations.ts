@@ -40,7 +40,8 @@ export const studentProfileSchema = z.object({
     .string()
     .regex(/^(\+88)?01[3-9]\d{8}$/, "Invalid Bangladeshi phone number"),
   bio: z.string().max(500, "Bio must be at most 500 characters").optional(),
-  group: z.enum(["SCIENCE", "COMMERCE", "ARTS", "OTHER"]),
+  profilePic: z.string().url("Invalid image URL").optional().or(z.literal("")),
+  group: z.enum(["NONE", "SCIENCE", "HUMANITIES", "BUSINESS_STUDIES"]),
 });
 
 export const tutorProfileSchema = z.object({
@@ -52,7 +53,8 @@ export const tutorProfileSchema = z.object({
     .regex(/^(\+88)?01[3-9]\d{8}$/, "Invalid Bangladeshi phone number"),
   bio: z.string().max(1000, "Bio is too long").optional(),
   institute: z.string().optional(),
-  group: z.enum(["SCIENCE", "COMMERCE", "ARTS", "OTHER"]),
+  group: z.enum(["NONE", "SCIENCE", "HUMANITIES", "BUSINESS_STUDIES"]),
+  profilePic: z.string().url("Invalid image URL").optional().or(z.literal("")),
   categoryId: z.string().min(1, "Category is required"),
   pricePerDay: z.coerce.number().min(1, "Price must be at least 1"),
 });

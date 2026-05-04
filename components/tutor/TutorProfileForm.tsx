@@ -17,9 +17,10 @@ import {
   User,
   Users,
 } from "lucide-react";
-import Image from "next/image";
+import ImageUpload from "@/components/shared/ImageUpload";
 import { useActionState, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 export default function TutorProfileForm({
   initialData,
@@ -30,12 +31,14 @@ export default function TutorProfileForm({
   session: Session | null;
   categories: Category[];
 }) {
+  const router = useRouter();
   const [selectedCategoryId, setSelectedCategoryId] = useState(
     initialData?.categoryId || "",
   );
   const [selectedSubjects, setSelectedSubjects] = useState<string[]>(
     initialData?.subjects || [],
   );
+  const [profilePic, setProfilePic] = useState(initialData?.profilePic || "");
 
   const handleSubjectToggle = (subject: string) => {
     setSelectedSubjects((prev) =>
@@ -58,14 +61,12 @@ export default function TutorProfileForm({
   useEffect(() => {
     if (state?.success) {
       toast.success("Tutor profile updated successfully!");
-      // Trigger refresh if needed, though action handles revalidation.
-      // router.refresh() is redundant if action revalidates path,
-      // but harmless for client-side state sync if needed.
-      // Although simpler to just rely on revalidation.
+      router.push("/tutor/profile");
+      router.refresh();
     } else if (state?.error) {
       toast.error(state.error);
     }
-  }, [state]);
+  }, [state, router]);
 
   // Track the previous categoryId to detect changes from parent
   const prevCategoryIdRef = useRef(initialData?.categoryId);
@@ -77,6 +78,7 @@ export default function TutorProfileForm({
     prevCategoryIdRef.current = initialData?.categoryId;
     setSelectedCategoryId(initialData?.categoryId || "");
     setSelectedSubjects(initialData?.subjects || []);
+    setProfilePic(initialData?.profilePic || "");
   }
 
   // Effect to clear selected subjects if category changes (user manual change)
@@ -95,18 +97,12 @@ export default function TutorProfileForm({
       {/* ... Profile Card Section (Unchanged) ... */}
       <div className="md:col-span-1 space-y-6">
         <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 text-center">
-          {/* ... (Same Image/User code) ... */}
-          <div className="w-24 h-24 bg-indigo-100 rounded-full mx-auto mb-4 flex items-center justify-center border-4 border-white shadow-md overflow-hidden relative">
-            {session?.user.image ? (
-              <Image
-                src={session.user.image}
-                alt=""
-                fill
-                className="object-cover"
-              />
-            ) : (
-              <User className="w-12 h-12 text-indigo-600" />
-            )}
+          <div className="mb-4">
+            <ImageUpload
+              value={profilePic}
+              onChange={(url) => setProfilePic(url)}
+              onRemove={() => setProfilePic("")}
+            />
           </div>
           <h2 className="text-xl font-bold text-gray-800 tracking-tight">
             {session?.user.name}
@@ -122,6 +118,7 @@ export default function TutorProfileForm({
 
       <div className="md:col-span-2 bg-white p-8 rounded-2xl shadow-sm border border-gray-100 font-semibold text-gray-700">
         <form action={formAction} className="space-y-6">
+          <input type="hidden" name="profilePic" value={profilePic} />
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div className="space-y-1.5">
               <label className="text-sm flex items-center gap-2">
@@ -258,7 +255,6 @@ export default function TutorProfileForm({
               <input
                 type="number"
                 name="experience"
-                required
                 defaultValue={initialData?.experience ?? 0}
                 className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:bg-white outline-none transition-all"
               />
@@ -272,7 +268,6 @@ export default function TutorProfileForm({
               <input
                 type="number"
                 name="pricePerDay"
-                required
                 defaultValue={initialData?.pricePerDay ?? 0}
                 className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:bg-white outline-none transition-all"
               />
@@ -285,7 +280,6 @@ export default function TutorProfileForm({
               <input
                 type="tel"
                 name="phone"
-                required
                 pattern="^(\+88)?01[3-9]\d{8}$"
                 title="Enter a valid Bangladeshi phone number (e.g., 01712345678)"
                 defaultValue={initialData?.phone || ""}
@@ -303,10 +297,10 @@ export default function TutorProfileForm({
                 defaultValue={initialData?.group || "SCIENCE"}
                 className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:bg-white outline-none transition-all"
               >
+                <option value="NONE">None</option>
                 <option value="SCIENCE">Science</option>
-                <option value="COMMERCE">Commerce</option>
-                <option value="ARTS">Arts</option>
-                <option value="OTHER">Other</option>
+                <option value="HUMANITIES">Humanities</option>
+                <option value="BUSINESS_STUDIES">Business Studies</option>
               </select>
             </div>
 
@@ -330,7 +324,6 @@ export default function TutorProfileForm({
               <input
                 type="text"
                 name="address"
-                required
                 minLength={5}
                 title="Address must be at least 5 characters"
                 defaultValue={initialData?.address || ""}

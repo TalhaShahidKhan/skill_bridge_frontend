@@ -48,6 +48,7 @@ export async function updateTutorProfileWithForm(
       bio,
       institute,
       group,
+      profilePic: (formData.get("profilePic") as string) || undefined,
     };
 
     const validated = tutorProfileSchema.parse(cleanedData);

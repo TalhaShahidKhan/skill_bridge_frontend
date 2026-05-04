@@ -1,9 +1,17 @@
-import { UserRole, UserStatus } from "@/lib/types";
+import {
+  Analytics,
+  Booking,
+  PaginatedResponse,
+  Review,
+  User,
+  UserRole,
+  UserStatus,
+} from "@/lib/types";
 import { apiFetch } from "./client";
 
 export const adminApi = {
   getAnalytics: (headers?: HeadersInit) =>
-    apiFetch("/admin/analytics", { headers }),
+    apiFetch<Analytics>("/admin/analytics", { headers }),
   listUsers: (
     query: {
       search?: string;
@@ -18,10 +26,13 @@ export const adminApi = {
     if (query.role) params.set("role", query.role);
     if (query.page) params.set("page", query.page.toString());
     if (query.limit) params.set("limit", query.limit.toString());
-    return apiFetch(`/admin/users?${params.toString()}`, { headers });
+    return apiFetch<PaginatedResponse<User>>(
+      `/admin/users?${params.toString()}`,
+      { headers },
+    );
   },
   getUser: (id: string, headers?: HeadersInit) =>
-    apiFetch(`/admin/users/${id}`, { headers }),
+    apiFetch<User>(`/admin/users/${id}`, { headers }),
   updateUserRole: (id: string, role: UserRole, headers?: HeadersInit) =>
     apiFetch(`/admin/users/${id}/role`, {
       method: "PATCH",
@@ -58,7 +69,10 @@ export const adminApi = {
     if (query.studentId) params.set("studentId", query.studentId);
     if (query.minRating) params.set("minRating", query.minRating.toString());
     if (query.maxRating) params.set("maxRating", query.maxRating.toString());
-    return apiFetch(`/admin/reviews?${params.toString()}`, { headers });
+    return apiFetch<PaginatedResponse<Review>>(
+      `/admin/reviews?${params.toString()}`,
+      { headers },
+    );
   },
   deleteReview: (id: string, headers?: HeadersInit) =>
     apiFetch(`/admin/reviews/${id}`, { method: "DELETE", headers }),
@@ -80,7 +94,10 @@ export const adminApi = {
     if (query.search) params.set("search", query.search);
     if (query.studentId) params.set("studentId", query.studentId);
     if (query.tutorId) params.set("tutorId", query.tutorId);
-    return apiFetch(`/admin/bookings?${params.toString()}`, { headers });
+    return apiFetch<PaginatedResponse<Booking>>(
+      `/admin/bookings?${params.toString()}`,
+      { headers },
+    );
   },
   setTutorFeatured: (id: string, isFeatured: boolean, headers?: HeadersInit) =>
     apiFetch(`/admin/tutors/${id}/featured`, {

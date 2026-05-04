@@ -1,16 +1,17 @@
-import { TutorProfile } from "@/lib/types";
+import { Booking, PaginatedResponse, Review, TutorProfile, TutorStats } from "@/lib/types";
 import { apiFetch } from "./client";
 
 export const tutorApi = {
-  getProfile: (headers?: HeadersInit) => apiFetch("/tutor/me", { headers }),
+  getProfile: (headers?: HeadersInit) =>
+    apiFetch<TutorProfile>("/tutor/me", { headers }),
   upsertProfile: (data: Partial<TutorProfile>, headers?: HeadersInit) =>
-    apiFetch("/tutor/me", {
+    apiFetch<TutorProfile>("/tutor/me", {
       method: "PUT",
       body: JSON.stringify(data),
       headers,
     }),
   updateProfile: (data: Partial<TutorProfile>, headers?: HeadersInit) =>
-    apiFetch("/tutor/me", {
+    apiFetch<TutorProfile>("/tutor/me", {
       method: "PATCH",
       body: JSON.stringify(data),
       headers,
@@ -19,7 +20,7 @@ export const tutorApi = {
     data: { availableFrom: string; availableTo: string; isAvailable: boolean },
     headers?: HeadersInit,
   ) =>
-    apiFetch("/tutor/availability", {
+    apiFetch<{ success: boolean }>("/tutor/availability", {
       method: "PUT",
       body: JSON.stringify(data),
       headers,
@@ -34,14 +35,17 @@ export const tutorApi = {
     if (query.limit) params.set("limit", query.limit.toString());
 
     const queryString = params.toString();
-    return apiFetch(`/tutor/sessions${queryString ? `?${queryString}` : ""}`, {
-      headers,
-    });
+    return apiFetch<PaginatedResponse<Booking>>(
+      `/tutor/sessions${queryString ? `?${queryString}` : ""}`,
+      {
+        headers,
+      },
+    );
   },
   getSessionDetails: (id: string, headers?: HeadersInit) =>
-    apiFetch(`/tutor/sessions/${id}`, { headers }),
+    apiFetch<Booking>(`/tutor/sessions/${id}`, { headers }),
   markSessionComplete: (id: string, headers?: HeadersInit) =>
-    apiFetch(`/tutor/sessions/${id}/complete`, {
+    apiFetch<{ success: boolean }>(`/tutor/sessions/${id}/complete`, {
       method: "PATCH",
       headers,
     }),
@@ -54,10 +58,13 @@ export const tutorApi = {
     if (query.limit) params.set("limit", query.limit.toString());
 
     const queryString = params.toString();
-    return apiFetch(`/tutor/reviews${queryString ? `?${queryString}` : ""}`, {
-      headers,
-    });
+    return apiFetch<PaginatedResponse<Review>>(
+      `/tutor/reviews${queryString ? `?${queryString}` : ""}`,
+      {
+        headers,
+      },
+    );
   },
   getDashboardStats: (headers?: HeadersInit) =>
-    apiFetch("/tutor/dashboard", { headers }),
+    apiFetch<TutorStats>("/tutor/dashboard", { headers }),
 };

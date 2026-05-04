@@ -90,6 +90,7 @@ export async function updateStudentProfileWithForm(
     const cleanedData = {
       ...rawData,
       bio: rawData.bio || undefined,
+      profilePic: (rawData.profilePic as string) || undefined,
     };
 
     const validated = studentProfileSchema.parse(cleanedData);

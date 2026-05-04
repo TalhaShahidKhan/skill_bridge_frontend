@@ -1,7 +1,7 @@
 export type UserRole = "STUDENT" | "TUTOR" | "ADMIN";
 export type UserStatus = "ACTIVE" | "SUSPENDED" | "DELETED";
 export type BookingStatus = "PENDING" | "CONFIRMED" | "COMPLETED" | "CANCELLED";
-export type Group = "SCIENCE" | "COMMERCE" | "ARTS" | "OTHER";
+export type Group = "NONE" | "SCIENCE" | "HUMANITIES" | "BUSINESS_STUDIES";
 
 export interface User {
   id: string;
@@ -23,6 +23,7 @@ export interface StudentProfile {
   address: string;
   phone: string;
   bio: string | null;
+  profilePic: string | null;
   group: string;
   user?: User;
 }
@@ -35,6 +36,7 @@ export interface TutorProfile {
   address: string;
   phone: string;
   bio: string | null;
+  profilePic: string | null;
   institute: string | null;
   group: string;
   availableFrom: string | null;
@@ -176,8 +178,26 @@ export interface Tutor {
   };
 }
 
+export interface TutorStats {
+  totalSessions: number;
+  confirmedSessions: number;
+  completedSessions: number;
+  cancelledSessions: number;
+  averageRating: number;
+  totalReviews: number;
+}
+
+export interface StudentStats {
+  totalBookings: number;
+  confirmedBookings: number;
+  completedBookings: number;
+  cancelledBookings: number;
+  totalReviews: number;
+}
+
 export interface ActionState {
   success: boolean;
   error?: string;
   data?: unknown;
 }
+

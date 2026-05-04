@@ -14,9 +14,10 @@ import {
   User,
   Users,
 } from "lucide-react";
-import Image from "next/image";
-import { useActionState, useEffect } from "react";
+import ImageUpload from "@/components/shared/ImageUpload";
+import { useActionState, useEffect, useState } from "react";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 import { Session, StudentProfile } from "@/lib/types";
 
@@ -27,6 +28,8 @@ export default function StudentProfileForm({
   initialData: StudentProfile | null;
   session: Session | null;
 }) {
+  const router = useRouter();
+  const [profilePic, setProfilePic] = useState(initialData?.profilePic || "");
   const initialState: ActionState = { success: false };
   const [state, formAction, isPending] = useActionState(
     updateStudentProfileWithForm,
@@ -36,28 +39,24 @@ export default function StudentProfileForm({
   useEffect(() => {
     if (state?.success) {
       toast.success("Profile updated successfully!");
+      router.push("/student/profile");
+      router.refresh();
     } else if (state?.error) {
       toast.error(state.error);
     }
-  }, [state]);
+  }, [state, router]);
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
       {/* Profile Card */}
       <div className="md:col-span-1 space-y-6">
         <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 text-center">
-          {/* ... (Same Image/User code) ... */}
-          <div className="w-24 h-24 bg-blue-100 rounded-full mx-auto mb-4 flex items-center justify-center border-4 border-white shadow-md overflow-hidden relative">
-            {session?.user.image ? (
-              <Image
-                src={session.user.image}
-                alt=""
-                fill
-                className="object-cover"
-              />
-            ) : (
-              <User className="w-12 h-12 text-blue-600" />
-            )}
+          <div className="mb-4">
+            <ImageUpload
+              value={profilePic}
+              onChange={(url) => setProfilePic(url)}
+              onRemove={() => setProfilePic("")}
+            />
           </div>
           <h2 className="text-xl font-bold text-gray-800 tracking-tight">
             {session?.user.name}
@@ -86,6 +85,7 @@ export default function StudentProfileForm({
       {/* Edit Form */}
       <div className="md:col-span-2 bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
         <form action={formAction} className="space-y-6">
+          <input type="hidden" name="profilePic" value={profilePic} />
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div className="space-y-1.5 font-semibold">
               <label className="text-sm text-gray-700 flex items-center gap-2">
@@ -94,7 +94,6 @@ export default function StudentProfileForm({
               <input
                 type="text"
                 name="institute"
-                required
                 defaultValue={initialData?.institute || ""}
                 className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none transition-all placeholder:text-gray-300"
                 placeholder="e.g. Dhaka University"
@@ -108,7 +107,6 @@ export default function StudentProfileForm({
               <input
                 type="text"
                 name="class"
-                required
                 defaultValue={initialData?.class || ""}
                 className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none transition-all placeholder:text-gray-300"
                 placeholder="e.g. Class 10 or 2nd Year"
@@ -122,7 +120,6 @@ export default function StudentProfileForm({
               <input
                 type="tel"
                 name="phone"
-                required
                 pattern="^(\+88)?01[3-9]\d{8}$"
                 title="Enter a valid Bangladeshi phone number (e.g., 01712345678)"
                 defaultValue={initialData?.phone || ""}
@@ -140,10 +137,10 @@ export default function StudentProfileForm({
                 defaultValue={initialData?.group || "SCIENCE"}
                 className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none transition-all"
               >
+                <option value="NONE">None</option>
                 <option value="SCIENCE">Science</option>
-                <option value="COMMERCE">Commerce</option>
-                <option value="ARTS">Arts</option>
-                <option value="OTHER">Other</option>
+                <option value="HUMANITIES">Humanities</option>
+                <option value="BUSINESS_STUDIES">Business Studies</option>
               </select>
             </div>
 
@@ -154,7 +151,6 @@ export default function StudentProfileForm({
               <input
                 type="text"
                 name="address"
-                required
                 minLength={5}
                 title="Address must be at least 5 characters"
                 defaultValue={initialData?.address || ""}

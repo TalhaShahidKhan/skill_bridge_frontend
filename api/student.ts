@@ -1,4 +1,11 @@
-import { PaginatedResponse, StudentProfile, Tutor } from "@/lib/types";
+import {
+  Booking,
+  PaginatedResponse,
+  Review,
+  StudentProfile,
+  StudentStats,
+  Tutor,
+} from "@/lib/types";
 import { apiFetch } from "./client";
 
 export const studentApi = {
@@ -26,18 +33,22 @@ export const studentApi = {
   },
   getTutorDetails: (id: string) => apiFetch<Tutor>(`/student/tutors/${id}`),
   listCategories: (headers?: HeadersInit) =>
-    apiFetch("/student/categories", { headers }),
+    apiFetch<{ categoryId: string; name: string; subjects: string[] }[]>(
+      "/student/categories",
+      { headers },
+    ),
 
   // Private (requires auth)
-  getProfile: (headers?: HeadersInit) => apiFetch("/student/me", { headers }),
+  getProfile: (headers?: HeadersInit) =>
+    apiFetch<{ profile: StudentProfile }>("/student/me", { headers }),
   upsertProfile: (data: Partial<StudentProfile>, headers?: HeadersInit) =>
-    apiFetch("/student/me", {
+    apiFetch<StudentProfile>("/student/me", {
       method: "PUT",
       body: JSON.stringify(data),
       headers,
     }),
   updateProfile: (data: Partial<StudentProfile>, headers?: HeadersInit) =>
-    apiFetch("/student/me", {
+    apiFetch<StudentProfile>("/student/me", {
       method: "PATCH",
       body: JSON.stringify(data),
       headers,
@@ -46,7 +57,7 @@ export const studentApi = {
     data: { tutorId: string; date: Date; time: Date; duration: number },
     headers?: HeadersInit,
   ) =>
-    apiFetch("/student/bookings", {
+    apiFetch<{ success: boolean }>("/student/bookings", {
       method: "POST",
       body: JSON.stringify(data),
       headers,
@@ -61,15 +72,15 @@ export const studentApi = {
     if (query.limit) params.set("limit", query.limit.toString());
 
     const queryString = params.toString();
-    return apiFetch(
+    return apiFetch<PaginatedResponse<Booking>>(
       `/student/bookings${queryString ? `?${queryString}` : ""}`,
       { headers },
     );
   },
   getBookingDetails: (id: string, headers?: HeadersInit) =>
-    apiFetch(`/student/bookings/${id}`, { headers }),
+    apiFetch<Booking>(`/student/bookings/${id}`, { headers }),
   cancelBooking: (id: string, headers?: HeadersInit) =>
-    apiFetch(`/student/bookings/${id}/cancel`, {
+    apiFetch<{ success: boolean }>(`/student/bookings/${id}/cancel`, {
       method: "PATCH",
       headers,
     }),
@@ -77,7 +88,7 @@ export const studentApi = {
     data: { bookingId: string; rating: number; comment?: string },
     headers?: HeadersInit,
   ) =>
-    apiFetch("/student/reviews", {
+    apiFetch<{ success: boolean }>("/student/reviews", {
       method: "POST",
       body: JSON.stringify(data),
       headers,
@@ -90,10 +101,13 @@ export const studentApi = {
     if (query.page) params.set("page", query.page.toString());
     if (query.limit) params.set("limit", query.limit.toString());
     const queryString = params.toString();
-    return apiFetch(`/student/reviews${queryString ? `?${queryString}` : ""}`, {
-      headers,
-    });
+    return apiFetch<PaginatedResponse<Review>>(
+      `/student/reviews${queryString ? `?${queryString}` : ""}`,
+      {
+        headers,
+      },
+    );
   },
   getDashboardStats: (headers?: HeadersInit) =>
-    apiFetch("/student/dashboard", { headers }),
+    apiFetch<StudentStats>("/student/dashboard", { headers }),
 };

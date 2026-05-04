@@ -84,7 +84,9 @@ export async function setTutorAvailabilityAction(data: {
 }) {
   const h = await getAuthHeaders();
   const res = await tutorApi.setAvailability(data, h);
+  revalidatePath("/tutor/availability");
   revalidatePath("/tutor");
+  revalidatePath("/tutors");
   return res;
 }
 
@@ -93,10 +95,11 @@ export async function setTutorAvailabilityWithForm(
   formData: FormData,
 ) {
   try {
+    const isAvailableValue = formData.get("isAvailable");
     const rawData = {
       availableFrom: formData.get("availableFrom") as string,
       availableTo: formData.get("availableTo") as string,
-      isAvailable: formData.get("isAvailable") === "true",
+      isAvailable: isAvailableValue === "true" || isAvailableValue === "on",
     };
 
     const h = await getAuthHeaders();
@@ -106,9 +109,12 @@ export async function setTutorAvailabilityWithForm(
       return { success: false, error: res.error };
     }
 
+    revalidatePath("/tutor/availability");
     revalidatePath("/tutor");
+    revalidatePath("/tutors");
     return { success: true };
-  } catch {
+  } catch (err) {
+    console.error("[AvailabilityAction] Error:", err);
     return { success: false, error: "An unexpected error occurred" };
   }
 }
@@ -141,4 +147,13 @@ export async function listTutorSessionsAction(query: {
 }) {
   const h = await getAuthHeaders();
   return tutorApi.listSessions(query, h);
+}
+
+export async function updateMeetingLinkAction(id: string, meetingLink: string) {
+  const h = await getAuthHeaders();
+  const res = await tutorApi.updateMeetingLink(id, meetingLink, h);
+  revalidatePath("/tutor/bookings");
+  revalidatePath("/tutor/sessions");
+  revalidatePath("/tutor");
+  return res;
 }

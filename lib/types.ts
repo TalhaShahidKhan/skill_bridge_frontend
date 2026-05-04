@@ -86,6 +86,7 @@ export interface Booking {
   duration: number;
   createdAt: string;
   updatedAt: string;
+  meetingLink?: string | null;
   student?: StudentProfile;
   tutor?: TutorProfile;
   review?: Review | null;

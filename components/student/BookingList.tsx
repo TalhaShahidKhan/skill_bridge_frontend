@@ -7,6 +7,7 @@ import {
   MapPin,
   MessageSquare,
   Users,
+  Video,
   XCircle,
 } from "lucide-react";
 import Image from "next/image";
@@ -20,6 +21,7 @@ interface Booking {
   date: string;
   time: string;
   duration: number;
+  meetingLink?: string | null;
   review?: { rating: number } | null;
   tutor?: {
     subjects?: string[];
@@ -48,6 +50,14 @@ export default function BookingList({ bookings }: { bookings: Booking[] }) {
         toast.success("Booking cancelled successfully");
       }
     });
+  };
+
+  const handleStartSession = (link: string | null | undefined) => {
+    if (!link) {
+      toast.info("The tutor hasn't provided the meeting link yet. Please check back later.");
+      return;
+    }
+    window.open(link, "_blank");
   };
 
   const bookingBeingReviewed = bookings.find(
@@ -142,6 +152,19 @@ export default function BookingList({ bookings }: { bookings: Booking[] }) {
             </div>
 
             <div className="flex items-center gap-3">
+              {booking.status === "CONFIRMED" && (
+                <button
+                  onClick={() => handleStartSession(booking.meetingLink)}
+                  className={`px-4 py-2 font-bold text-sm rounded-xl shadow-lg transition-all flex items-center gap-2 active:scale-95 ${
+                    booking.meetingLink
+                      ? "bg-emerald-600 text-white shadow-emerald-100 hover:bg-emerald-700"
+                      : "bg-gray-100 text-gray-400 cursor-not-allowed opacity-70"
+                  }`}
+                  title={booking.meetingLink ? "Join the meeting" : "Waiting for tutor to provide link"}
+                >
+                  <Video className="w-4 h-4" /> Start Session
+                </button>
+              )}
               {booking.status === "CONFIRMED" && (
                 <button
                   onClick={() => handleCancel(booking.id)}

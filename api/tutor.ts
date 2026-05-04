@@ -49,6 +49,12 @@ export const tutorApi = {
       method: "PATCH",
       headers,
     }),
+  updateMeetingLink: (id: string, meetingLink: string, headers?: HeadersInit) =>
+    apiFetch<{ success: boolean }>(`/tutor/sessions/${id}/meeting-link`, {
+      method: "PATCH",
+      body: JSON.stringify({ meetingLink }),
+      headers,
+    }),
   listReviews: (
     query: { page?: number; limit?: number },
     headers?: HeadersInit,

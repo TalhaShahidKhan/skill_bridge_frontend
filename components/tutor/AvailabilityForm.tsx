@@ -21,6 +21,16 @@ export default function AvailabilityForm({
     initialData?.isAvailable ?? true,
   );
 
+  // Track previous value to sync state during render instead of useEffect
+  const [prevIsAvailable, setPrevIsAvailable] = useState(
+    initialData?.isAvailable,
+  );
+
+  if (initialData?.isAvailable !== prevIsAvailable) {
+    setPrevIsAvailable(initialData?.isAvailable);
+    setIsAvailable(initialData?.isAvailable ?? true);
+  }
+
   const [state, formAction, isPending] = useActionState(
     setTutorAvailabilityWithForm,
     { success: false },

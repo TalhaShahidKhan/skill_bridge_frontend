@@ -22,6 +22,13 @@
 - **Availability Control**: Manage teaching hours and real-time booking status.
 - **Session Management**: Handle student requests and session completion.
 
+### For Admins (God Mode)
+
+- **Advanced Analytics**: Real-time tracking of users, bookings, and platform revenue.
+- **Financial Auditing**: Complete oversight of all transactions and payments.
+- **User Moderation**: Manage accounts, roles, and suspension states.
+- **Force Actions**: Ability to delete bookings and moderate profiles directly.
+
 ### Security & Account
 
 - **HTML Email Notifications**: Modern email templates for verification and resets.

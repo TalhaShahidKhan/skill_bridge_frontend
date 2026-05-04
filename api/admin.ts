@@ -3,6 +3,8 @@ import {
   Booking,
   PaginatedResponse,
   Review,
+  StudentProfile,
+  TutorProfile,
   User,
   UserRole,
   UserStatus,
@@ -156,13 +158,21 @@ export const adminApi = {
     apiFetch(`/admin/bookings/${id}`, { method: "DELETE", headers }),
 
   // Global Profile Updates
-  updateTutorProfile: (id: string, data: any, headers?: HeadersInit) =>
+  updateTutorProfile: (
+    id: string,
+    data: Partial<TutorProfile>,
+    headers?: HeadersInit,
+  ) =>
     apiFetch(`/admin/tutors/${id}`, {
       method: "PATCH",
       body: JSON.stringify(data),
       headers,
     }),
-  updateStudentProfile: (id: string, data: any, headers?: HeadersInit) =>
+  updateStudentProfile: (
+    id: string,
+    data: Partial<StudentProfile>,
+    headers?: HeadersInit,
+  ) =>
     apiFetch(`/admin/students/${id}`, {
       method: "PATCH",
       body: JSON.stringify(data),

@@ -1,7 +1,7 @@
 "use server";
 
 import { adminApi } from "@/api/admin";
-import { UserRole, UserStatus } from "@/lib/types";
+import { StudentProfile, TutorProfile, UserRole, UserStatus } from "@/lib/types";
 import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 
@@ -112,14 +112,20 @@ export async function deleteBookingAction(id: string) {
   return res;
 }
 
-export async function updateTutorProfileAction(id: string, data: any) {
+export async function updateTutorProfileAdminAction(
+  id: string,
+  data: Partial<TutorProfile>,
+) {
   const h = await getAuthHeaders();
   const res = await adminApi.updateTutorProfile(id, data, h);
   revalidatePath("/admin/users");
   return res;
 }
 
-export async function updateStudentProfileAction(id: string, data: any) {
+export async function updateStudentProfileAdminAction(
+  id: string,
+  data: Partial<StudentProfile>,
+) {
   const h = await getAuthHeaders();
   const res = await adminApi.updateStudentProfile(id, data, h);
   revalidatePath("/admin/users");

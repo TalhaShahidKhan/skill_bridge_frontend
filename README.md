@@ -10,23 +10,22 @@
 
 ### For Students
 
-- **Smart Tutor Discovery**: Browse tutors with advanced filters (category, price, availability, featured).
-- **Seamless Booking**: Easy scheduling for tutoring sessions.
-- **Review System**: Rate and review tutors after completed sessions.
-- **Personal Dashboard**: Track upcoming bookings and session history.
+- **Smart Tutor Discovery**: Browse tutors with advanced filters.
+- **Secure Stripe Payments**: Upfront payment for sessions using Stripe Checkout.
+- **Session Tracking**: Monitor confirmed bookings and session history.
+- **Review System**: Rate tutors after successful completion.
 
 ### For Tutors
 
-- **Profile Management**: Showcase expertise, subjects, and pricing.
-- **Availability Control**: Manage teaching hours and booking status.
-- **Earnings Tracking**: Monitor performance and reviews.
-- **Session Management**: Handle incoming student requests and mark sessions as complete.
+- **Payment Dashboard**: View transaction history and earnings in a dedicated, premium UI.
+- **Professional Presence**: Showcase expertise, subjects, and pricing.
+- **Availability Control**: Manage teaching hours and real-time booking status.
+- **Session Management**: Handle student requests and session completion.
 
-### For Admins
+### Security & Account
 
-- **Analytics Dashboard**: High-level overview of platform growth and metrics.
-- **Moderation**: Manage users, tutors, and categories.
-- **User Management**: Control user roles and account statuses.
+- **HTML Email Notifications**: Modern email templates for verification and resets.
+- **Password Management**: Change password from profile and secure reset flow.
 
 ---
 
@@ -36,83 +35,54 @@
 - **Language**: [TypeScript](https://www.typescriptlang.org/)
 - **Styling**: [Tailwind CSS](https://tailwindcss.com/)
 - **Authentication**: [Better Auth](https://better-auth.com/)
+- **Payments**: [Stripe](https://stripe.com/)
 - **Icons**: [Lucide React](https://lucide.dev/)
-- **Components**: Custom premium UI components with glassmorphism and modern aesthetics.
-- **State Management**: React `useActionState` and Server Actions for form handling.
 
 ---
 
 ## 🛠️ Getting Started
 
-### Prerequisites
-
-- Node.js 18+
-- NPM / PNPM / Yarn
-
-### Installation
-
-1. **Clone the repository**
-
-   ```bash
-   git clone https://github.com/TalhaShahidKhan/skill_bridge.git
-   cd skill_bridge/skill_bridge_frontend
-   ```
-
-2. **Install dependencies**
-
+1. **Install dependencies**
    ```bash
    npm install
    ```
 
-3. **Configure Environment Variables**
-   Create a `.env.local` file in the root directory:
-
+2. **Configure Environment Variables**
+   Create a `.env.local` file:
    ```env
-   NEXT_PUBLIC_API_URL=http://localhost:3000/api/v1
-   NEXT_PUBLIC_AUTH_URL=http://localhost:3000
-   BETTER_AUTH_URL=http://localhost:3000
+   NEXT_PUBLIC_API_URL=http://localhost:8000/api
+   NEXT_PUBLIC_AUTH_URL=http://localhost:8000
    ```
 
-4. **Run the development server**
+3. **Run the development server**
    ```bash
    npm run dev
    ```
 
 ---
 
-## 📦 Production Deployment
-
-The application is optimized for deployment on **Vercel**.
-
-### Build
+## 📦 Production
 
 ```bash
 npm run build
+npm start
 ```
-
-### Deploy to Vercel
-
-1. Push your code to a GitHub repository.
-2. Import the project in the [Vercel Dashboard](https://vercel.com/new).
-3. Set the environment variables in the Vercel project settings.
-4. Click **Deploy**.
 
 ---
 
 ## 📂 Project Structure
 
-- `app/`: Next.js App Router pages and layouts.
-- `components/`: Reusable UI components (Student, Tutor, Admin, Auth cores).
-- `api/`: API client and endpoint handlers.
-- `actions/`: Server Actions for data mutations.
-- `lib/`: Utility functions, shared types, and constants.
-- `public/`: Static assets and images.
+- `app/`: Pages and layouts.
+- `components/`: UI components (including new Payment and Security modules).
+- `api/`: API client handlers.
+- `actions/`: Server Actions for mutations.
+- `lib/`: Utilities, types, and validations.
 
 ---
 
 ## 📄 License
 
-This project is licensed under the ISC License.
+ISC
 
 ---
 

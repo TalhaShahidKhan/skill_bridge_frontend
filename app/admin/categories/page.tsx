@@ -14,7 +14,7 @@ import { headers } from "next/headers";
 export default async function CategoriesPage() {
   const h = await headers();
   const { data: categories } = await studentApi.listCategories({
-    cookie: h.get("cookie") || "",
+    headers: { cookie: h.get("cookie") || "" },
   });
 
   return (

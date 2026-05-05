@@ -32,7 +32,7 @@ export async function createBookingAction(data: {
   duration: number;
 }) {
   const h = await getAuthHeaders();
-  const res = await studentApi.createBooking(data, h);
+  const res = await studentApi.createBooking(data, { headers: h });
   revalidatePath("/student/bookings");
   revalidatePath("/student");
   return res;
@@ -51,7 +51,7 @@ export async function createBookingWithForm(
     };
 
     const h = await getAuthHeaders();
-    const res = await studentApi.createBooking(rawData, h);
+    const res = await studentApi.createBooking(rawData, { headers: h });
 
     if (res.error) {
       return { success: false, error: res.error };
@@ -79,7 +79,7 @@ export async function createCheckoutSessionWithForm(
     };
 
     const h = await getAuthHeaders();
-    const res = await studentApi.createCheckoutSession(rawData, h);
+    const res = await studentApi.createCheckoutSession(rawData, { headers: h });
 
     if (res.error) {
       return { success: false, error: res.error };
@@ -101,7 +101,7 @@ export async function updateStudentProfileAction(
   data: Partial<StudentProfile>,
 ) {
   const h = await getAuthHeaders();
-  const res = await studentApi.updateProfile(data, h);
+  const res = await studentApi.updateProfile(data, { headers: h });
   revalidatePath("/student/profile");
   return res;
 }
@@ -123,7 +123,7 @@ export async function updateStudentProfileWithForm(
     const validated = studentProfileSchema.parse(cleanedData);
 
     const h = await getAuthHeaders();
-    const res = await studentApi.upsertProfile(validated, h);
+    const res = await studentApi.upsertProfile(validated, { headers: h });
 
     if (res.error) {
       return { success: false, error: res.error };
@@ -144,7 +144,7 @@ export async function updateStudentProfileWithForm(
 
 export async function cancelBookingAction(id: string) {
   const h = await getAuthHeaders();
-  const res = await studentApi.cancelBooking(id, h);
+  const res = await studentApi.cancelBooking(id, { headers: h });
   revalidatePath("/student/bookings");
   revalidatePath("/student");
   return res;
@@ -157,7 +157,7 @@ export async function createReviewAction(data: {
   comment?: string;
 }) {
   const h = await getAuthHeaders();
-  const res = await studentApi.createReview(data, h);
+  const res = await studentApi.createReview(data, { headers: h });
   revalidatePath("/student/reviews");
   revalidatePath("/student/bookings");
   revalidatePath("/tutors");
@@ -184,7 +184,7 @@ export async function createReviewWithForm(
     }
 
     const h = await getAuthHeaders();
-    const res = await studentApi.createReview(data, h);
+    const res = await studentApi.createReview(data, { headers: h });
 
     if (res.error) {
       return { success: false, error: res.error };

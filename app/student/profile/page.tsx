@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 export default async function ProfilePage() {
   const h = await headers();
   const [{ data: result }, { data: session }] = await Promise.all([
-    studentApi.getProfile(h),
+    studentApi.getProfile({ headers: h }),
     authClient.getSession({ fetchOptions: { headers: h } }),
   ]);
 

@@ -37,6 +37,16 @@ export default async function BookingsPage({
   const params = await searchParams;
   const statusFilter = (params.status as string) || "ALL";
   const page = parseInt((params.page as string) || "1");
+  const sessionId = params.session_id as string;
+
+  // If redirected from Stripe with success and sessionId, verify it first
+  if (params.success === "true" && sessionId) {
+    try {
+      await studentApi.verifyPaymentSession(sessionId, { headers: h });
+    } catch (err) {
+      console.error("Failed to verify payment session:", err);
+    }
+  }
 
   const { data: result } = await studentApi.listBookings(
     {
@@ -44,7 +54,7 @@ export default async function BookingsPage({
       page,
       limit: 10,
     },
-    h,
+    { headers: h, cache: "no-store" },
   );
 
   // API returns { pagination, data } structure

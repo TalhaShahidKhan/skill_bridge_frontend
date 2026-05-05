@@ -37,9 +37,9 @@ export default async function StudentDashboardPage() {
 
   const [sessionRes, statsRes, bookingsRes, reviewsRes] = await Promise.all([
     authClient.getSession({ fetchOptions: { headers: { cookie } } }),
-    studentApi.getDashboardStats({ cookie }),
-    studentApi.listBookings({ limit: 5 }, { cookie }),
-    studentApi.listReviews({ limit: 3 }, { cookie }),
+    studentApi.getDashboardStats({ headers: { cookie } }),
+    studentApi.listBookings({ limit: 5 }, { headers: { cookie } }),
+    studentApi.listReviews({ limit: 3 }, { headers: { cookie } }),
   ]);
 
   const session = sessionRes.data;
